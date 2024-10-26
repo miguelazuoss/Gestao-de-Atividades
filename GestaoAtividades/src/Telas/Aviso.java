@@ -5,31 +5,36 @@
 package Telas;
 
 import java.awt.Color;
+import javax.swing.JDialog;
 
 /**
  *
  * @author user
  */
-public class Aviso extends javax.swing.JFrame {
-
+public class Aviso extends JDialog { // extendendo um JDialog para representar um dialogo //
     /**
      * Creates new form Erro
      */
     public Aviso() {
+        setModal(true); // setando como um modal, para não conseguir interagir até que o aviso seja encerrado //
         initComponents();
         setBackground(new Color(0, 0, 0, 0));
         panelBorderFundoErro.initMoving(this);
     }
 
     public void MensagemErro(String erro) {
+        jlTituloFalha.setText("Falha");
         jtfTextoAviso.setText(erro);
+        jpBorder.setBackground(Color.decode("#FF3333"));
         this.setVisible(true);
         this.setAlwaysOnTop(true);
+        
     }
     
     public void MensagemSucesso(String sucesso) {
         jlTituloFalha.setText("Sucesso");
         jtfTextoAviso.setText(sucesso);
+        jpBorder.setBackground(Color.decode("#15d283"));
         buttonPersonalizadoSair.setColor(Color.decode("#15d283"));
         buttonPersonalizadoSair.setColorOver(Color.GREEN);
         buttonPersonalizadoSair.setColorClick(Color.GREEN);
@@ -53,7 +58,7 @@ public class Aviso extends javax.swing.JFrame {
         jlTituloFalha = new javax.swing.JLabel();
         jtfTextoAviso = new javax.swing.JTextField();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setUndecorated(true);
 
         panelBorderFundoErro.setBackground(new java.awt.Color(255, 255, 255));

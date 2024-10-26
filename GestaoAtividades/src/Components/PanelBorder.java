@@ -4,14 +4,14 @@
  */
 package Components;
 
-import Telas.Login;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.Window;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-import javax.swing.JFrame;
+
 
 /**
  *
@@ -46,7 +46,7 @@ public class PanelBorder extends javax.swing.JPanel {
         super.paintComponent(grphcs); //  Chamando o método da classe pai para garantir que o componente seja desenhado corretamente
     }
 
-    public void initMoving(JFrame fram) {
+    public void initMoving(Window fram ) { // Window é a classe pai de JFrame e JDialog, e devido ao Polimorfismo subclasses podem ser tratadas como sua classe pai ( só não podendo chamar metodos que não existe na classe pai )- assim não é necessario repetir o codigo com parametros de JFrame e JDialog
         this.addMouseListener(new MouseAdapter() { //  Listenet do mouse para detectar quando o botão do mouse é pressionado
             @Override // Sobreescrever o metodo da classe pai
             public void mousePressed(MouseEvent me) { // Armazeno a posição do mouse quando ele é pressionado
