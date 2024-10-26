@@ -15,6 +15,7 @@ import java.sql.ResultSet;
  * @author user
  */
 public class UsuarioDAO {
+
     Aviso aviso = new Aviso();
     private Connection con;
     ResultSet rs;
@@ -39,7 +40,7 @@ public class UsuarioDAO {
             return false;
         }
     }
-    
+
     public Usuario logarUsuario(String usuarioText, String senhaText) {
         Usuario usuario = null;
         String sql = "select * from usuario where user=? and pass = ?";
@@ -63,33 +64,35 @@ public class UsuarioDAO {
             }
         } catch (Exception e) {
             // Aqui trata qualquer exceção não esperada
-            aviso.MensagemErro("Erro: "+e);
+            aviso.MensagemErro("Erro: " + e);
         }
 
         return usuario; // Retorna null se não encontrar o usuário ou se ocorrer erro
     }
-    
-    public void cadastrarUsuario(Usuario user){
+
+    public void cadastrarUsuario(Usuario user) {
         String sql = "insert into usuario(user,pass,email) values(?,?,?)";
-        try(PreparedStatement ps = con.prepareStatement(sql)) {
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, user.getUser());
             ps.setString(2, user.getPass());
             ps.setString(3, user.getEmail());
-            
+
             ps.execute();
             ps.close();
             aviso.MensagemSucesso("Usuario " + user.getUser() + " cadastrado com sucesso!");
         } catch (Exception e) {
-            if(e.toString().equalsIgnoreCase("java.sql.SQLIntegrityConstraintViolationException: Duplicate entry 'miguel@hotmail.com' for key 'email'")){
-            aviso.MensagemErro("E-mail já existente cadastrado!");
-            } else{
-                aviso.MensagemErro("Erro ao cadastrar usuario! " + e);
+            if (e.toString().equalsIgnoreCase("java.sql.SQLIntegrityConstraintViolationException: Duplicate entry '" + user.getEmail() + "' for key 'email'")) {
+                aviso.MensagemErro("E-mail já existente cadastrado!");
             }
+            if (e.toString().equalsIgnoreCase("java.sql.SQLIntegrityConstraintViolationException: Duplicate entry '" + user.getUser() + "' for key 'user'")) {
+                aviso.MensagemErro("Usuario já existente cadastrado!");
+            }
+            aviso.MensagemErro("Erro ao cadastrar usuario! " + e);
         }
     }
-    
-    public void alterarSenha(String email,String pass) {
-        if(verificarEmail(email) == true){
+
+    public void alterarSenha(String email, String pass) {
+        if (verificarEmail(email) == true) {
             String sql = "update usuario set pass=? where email=?";
             try (PreparedStatement ps = con.prepareStatement(sql)) {
                 ps.setString(1, pass);
