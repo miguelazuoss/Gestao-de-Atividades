@@ -26,7 +26,10 @@ public class ButtonPersonalizado extends JButton {
     private Color colorClick;
     private Color borderColor;
     private int radius = 0;
-
+    private boolean gradient;
+    private Color gradientStartColor;
+    private Color gradientFinalColor;
+    
     public ButtonPersonalizado() {
 
         setColor(getBackground()); // Cores iniciais do botão para facil manipulação //
@@ -116,12 +119,41 @@ public class ButtonPersonalizado extends JButton {
         this.radius = radius;
     }
 
+    public boolean isGradient() {
+        return gradient;
+    }
+
+    public void setGradient(boolean gradient) {
+        this.gradient = gradient;
+        repaint();
+    }
+
+    public Color getGradientStartColor() {
+        return gradientStartColor;
+    }
+
+    public void setGradientStartColor(Color gradientStartColor) {
+        this.gradientStartColor = gradientStartColor;
+    }
+
+    public Color getGradientFinalColor() {
+        return gradientFinalColor;
+    }
+
+    public void setGradientFinalColor(Color gradientFinalColor) {
+        this.gradientFinalColor = gradientFinalColor;
+    }
+
     @Override
     protected void paintComponent(Graphics grphcs) {
         Graphics2D g2 = (Graphics2D) grphcs; // Converte o Graphics em Graphics2D pra gráficos avançados
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON); // Ativo o suavizamento das bordas para deixar o desenho mais suave
-
-        g2.setColor(getBackground()); // Define a cor do fundo antes de desenhar
+        if(gradient == true && gradientStartColor != null && gradientFinalColor != null ){
+            GradientPaint g = new GradientPaint(0, 0, gradientStartColor, getWidth(), getHeight(), gradientFinalColor); // Gradiente que vai do preto no canto superior esquerdo até um cinza no canto inferior direito
+            g2.setPaint(g); //  usar esse gradiente para o desenho
+        } else {
+            g2.setColor(getBackground()); // Define a cor do fundo antes de desenhar
+        }
         g2.fillRoundRect(0, 0, getWidth(), getHeight(), radius, radius); // preenchendo um retângulo arredondado
 
         super.paintComponent(grphcs); // Chamando o método da classe pai para garantir que o componente seja desenhado corretamente

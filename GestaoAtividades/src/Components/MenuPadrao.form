@@ -21,7 +21,7 @@
                   <Group type="102" attributes="0">
                       <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
+                          <Component id="jlActivities" min="-2" max="-2" attributes="0"/>
                           <Component id="jlMy" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
@@ -40,7 +40,7 @@
               <EmptySpace min="-2" pref="123" max="-2" attributes="0"/>
               <Component id="jlMy" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
-              <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
+              <Component id="jlActivities" min="-2" max="-2" attributes="0"/>
               <EmptySpace pref="419" max="32767" attributes="0"/>
               <Component id="jlDeveloper" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
@@ -71,7 +71,7 @@
         <Property name="text" type="java.lang.String" value="Desenvolvido por Miguel Augusto"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="jLabel2">
+    <Component class="javax.swing.JLabel" name="jlActivities">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Segoe UI" size="50" style="1"/>

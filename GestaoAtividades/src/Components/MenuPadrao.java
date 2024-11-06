@@ -9,8 +9,6 @@ import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.awt.event.MouseAdapter;
-import javax.swing.JFrame;
 
 /**
  *
@@ -48,7 +46,7 @@ public class MenuPadrao extends javax.swing.JPanel {
 
         jlMy = new javax.swing.JLabel();
         jlDeveloper = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        jlActivities = new javax.swing.JLabel();
 
         jlMy.setFont(new java.awt.Font("Segoe UI", 1, 50)); // NOI18N
         jlMy.setForeground(new java.awt.Color(255, 255, 255));
@@ -58,9 +56,9 @@ public class MenuPadrao extends javax.swing.JPanel {
         jlDeveloper.setForeground(new java.awt.Color(255, 255, 255));
         jlDeveloper.setText("Desenvolvido por Miguel Augusto");
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 50)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("Activities");
+        jlActivities.setFont(new java.awt.Font("Segoe UI", 1, 50)); // NOI18N
+        jlActivities.setForeground(new java.awt.Color(255, 255, 255));
+        jlActivities.setText("Activities");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -71,7 +69,7 @@ public class MenuPadrao extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(33, 33, 33)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
+                            .addComponent(jlActivities)
                             .addComponent(jlMy)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(18, 18, 18)
@@ -84,7 +82,7 @@ public class MenuPadrao extends javax.swing.JPanel {
                 .addGap(123, 123, 123)
                 .addComponent(jlMy)
                 .addGap(0, 0, 0)
-                .addComponent(jLabel2)
+                .addComponent(jlActivities)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 419, Short.MAX_VALUE)
                 .addComponent(jlDeveloper)
                 .addContainerGap())
@@ -93,7 +91,7 @@ public class MenuPadrao extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jlActivities;
     private javax.swing.JLabel jlDeveloper;
     private javax.swing.JLabel jlMy;
     // End of variables declaration//GEN-END:variables

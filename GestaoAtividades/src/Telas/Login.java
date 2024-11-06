@@ -337,6 +337,11 @@ public class Login extends javax.swing.JFrame {
                 String login = jtfUsuario.getText().trim();
                 String senha = new String(jpfSenha.getPassword());
                 Usuario usuario = usuarioDAO.logarUsuario(login, senha);
+                if(usuario != null) {
+                    Principal telaPrincipal = new Principal();
+                    telaPrincipal.setVisible(true);
+                    dispose();
+                }
             } else {
                 aviso.MensagemErro("Senha está vazia!");
             }
