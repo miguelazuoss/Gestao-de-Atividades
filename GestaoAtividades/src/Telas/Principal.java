@@ -13,14 +13,16 @@ import javax.swing.JFrame;
  * @author miguel_a_andrade
  */
 public class Principal extends javax.swing.JFrame {
-
     /**
      * Creates new form Principal
      */
     public Principal() {
         initComponents();
+        cardButton1.setTemp1(cardButton1.getGradientStartColor());
+        cardButton1.setTemp2(cardButton1.getGradientFinalColor());
         setBackground(new Color(0, 0, 0, 0));
         panelBorderWithRadius.initMoving(this);
+        buttonPersonalizado1.setText("<html><center>Atividades não iniciadas<br>0</center></html>");
     }
 
     /**
@@ -39,6 +41,7 @@ public class Principal extends javax.swing.JFrame {
         buttonPersonalizado1 = new Components.ButtonPersonalizado();
         buttonPersonalizado2 = new Components.ButtonPersonalizado();
         buttonPersonalizado3 = new Components.ButtonPersonalizado();
+        cardButton1 = new Components.CardButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -83,11 +86,19 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
-        buttonPersonalizado1.setText("buttonPersonalizado1");
+        buttonPersonalizado1.setBorder(null);
+        buttonPersonalizado1.setForeground(new java.awt.Color(255, 255, 255));
+        buttonPersonalizado1.setText("Atividades não iniciadas 5");
+        buttonPersonalizado1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         buttonPersonalizado1.setGradient(true);
         buttonPersonalizado1.setGradientFinalColor(new java.awt.Color(243, 115, 53));
         buttonPersonalizado1.setGradientStartColor(new java.awt.Color(253, 200, 48));
         buttonPersonalizado1.setRadius(15);
+        buttonPersonalizado1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonPersonalizado1ActionPerformed(evt);
+            }
+        });
 
         buttonPersonalizado2.setText("buttonPersonalizado2");
         buttonPersonalizado2.addActionListener(new java.awt.event.ActionListener() {
@@ -97,6 +108,14 @@ public class Principal extends javax.swing.JFrame {
         });
 
         buttonPersonalizado3.setText("buttonPersonalizado3");
+
+        cardButton1.setColor(new java.awt.Color(255, 153, 153));
+        cardButton1.setColorClick(new java.awt.Color(255, 102, 0));
+        cardButton1.setGradient(true);
+        cardButton1.setGradientFinalColor(new java.awt.Color(243, 115, 53));
+        cardButton1.setGradientFinalColorHover(new java.awt.Color(231, 103, 0));
+        cardButton1.setGradientStartColor(new java.awt.Color(253, 200, 48));
+        cardButton1.setGradientStartColorHover(new java.awt.Color(253, 170, 97));
 
         javax.swing.GroupLayout panelBorderWithRadiusLayout = new javax.swing.GroupLayout(panelBorderWithRadius);
         panelBorderWithRadius.setLayout(panelBorderWithRadiusLayout);
@@ -112,13 +131,17 @@ public class Principal extends javax.swing.JFrame {
                         .addComponent(jbtExit, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(5, 5, 5))
                     .addGroup(panelBorderWithRadiusLayout.createSequentialGroup()
-                        .addGap(70, 70, 70)
+                        .addGap(72, 72, 72)
                         .addComponent(buttonPersonalizado1, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(47, 47, 47)
+                        .addGap(45, 45, 45)
                         .addComponent(buttonPersonalizado2, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
                         .addComponent(buttonPersonalizado3, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(70, 70, 70))))
+                        .addGap(70, 70, 70))
+                    .addGroup(panelBorderWithRadiusLayout.createSequentialGroup()
+                        .addGap(51, 51, 51)
+                        .addComponent(cardButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         panelBorderWithRadiusLayout.setVerticalGroup(
             panelBorderWithRadiusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -130,11 +153,17 @@ public class Principal extends javax.swing.JFrame {
                     .addGroup(panelBorderWithRadiusLayout.createSequentialGroup()
                         .addGap(3, 3, 3)
                         .addComponent(jbtExit, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(76, 76, 76)
-                .addGroup(panelBorderWithRadiusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(buttonPersonalizado1, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(buttonPersonalizado2, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(buttonPersonalizado3, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(panelBorderWithRadiusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelBorderWithRadiusLayout.createSequentialGroup()
+                        .addGap(82, 82, 82)
+                        .addGroup(panelBorderWithRadiusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(buttonPersonalizado2, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(buttonPersonalizado3, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(panelBorderWithRadiusLayout.createSequentialGroup()
+                        .addGap(84, 84, 84)
+                        .addComponent(buttonPersonalizado1, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(59, 59, 59)
+                .addComponent(cardButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -187,6 +216,13 @@ public class Principal extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_buttonPersonalizado2ActionPerformed
 
+    private void buttonPersonalizado1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonPersonalizado1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_buttonPersonalizado1ActionPerformed
+
+    private void teste(){
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -226,6 +262,7 @@ public class Principal extends javax.swing.JFrame {
     private Components.ButtonPersonalizado buttonPersonalizado1;
     private Components.ButtonPersonalizado buttonPersonalizado2;
     private Components.ButtonPersonalizado buttonPersonalizado3;
+    private Components.CardButton cardButton1;
     private javax.swing.JButton jbtExit;
     private javax.swing.JButton jbtMinimize;
     private Components.MenuPrincipal menuPrincipal;

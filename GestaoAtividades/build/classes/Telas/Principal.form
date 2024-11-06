@@ -55,13 +55,18 @@
                           <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="70" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="72" max="-2" attributes="0"/>
                           <Component id="buttonPersonalizado1" min="-2" pref="269" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="47" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
                           <Component id="buttonPersonalizado2" min="-2" pref="259" max="-2" attributes="0"/>
                           <EmptySpace pref="47" max="32767" attributes="0"/>
                           <Component id="buttonPersonalizado3" min="-2" pref="259" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="70" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="-2" pref="51" max="-2" attributes="0"/>
+                          <Component id="cardButton1" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -79,12 +84,21 @@
                           <Component id="jbtExit" min="-2" pref="18" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace min="-2" pref="76" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="buttonPersonalizado1" alignment="3" min="-2" pref="154" max="-2" attributes="0"/>
-                      <Component id="buttonPersonalizado2" alignment="3" min="-2" pref="154" max="-2" attributes="0"/>
-                      <Component id="buttonPersonalizado3" alignment="3" min="-2" pref="154" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" attributes="0">
+                          <EmptySpace min="-2" pref="82" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="buttonPersonalizado2" alignment="3" min="-2" pref="154" max="-2" attributes="0"/>
+                              <Component id="buttonPersonalizado3" alignment="3" min="-2" pref="154" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="-2" pref="84" max="-2" attributes="0"/>
+                          <Component id="buttonPersonalizado1" min="-2" pref="154" max="-2" attributes="0"/>
+                      </Group>
                   </Group>
+                  <EmptySpace min="-2" pref="59" max="-2" attributes="0"/>
+                  <Component id="cardButton1" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
@@ -139,7 +153,16 @@
         </Component>
         <Component class="Components.ButtonPersonalizado" name="buttonPersonalizado1">
           <Properties>
-            <Property name="text" type="java.lang.String" value="buttonPersonalizado1"/>
+            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+              <Border info="null"/>
+            </Property>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="ff" green="ff" red="ff" type="rgb"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Atividades n&#xe3;o iniciadas 5"/>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Segoe UI" size="24" style="1"/>
+            </Property>
             <Property name="gradient" type="boolean" value="true"/>
             <Property name="gradientFinalColor" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="35" green="73" red="f3" type="rgb"/>
@@ -149,6 +172,9 @@
             </Property>
             <Property name="radius" type="int" value="15"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonPersonalizado1ActionPerformed"/>
+          </Events>
         </Component>
         <Component class="Components.ButtonPersonalizado" name="buttonPersonalizado2">
           <Properties>
@@ -161,6 +187,29 @@
         <Component class="Components.ButtonPersonalizado" name="buttonPersonalizado3">
           <Properties>
             <Property name="text" type="java.lang.String" value="buttonPersonalizado3"/>
+          </Properties>
+        </Component>
+        <Component class="Components.CardButton" name="cardButton1">
+          <Properties>
+            <Property name="color" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="99" green="99" red="ff" type="rgb"/>
+            </Property>
+            <Property name="colorClick" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="0" green="66" red="ff" type="rgb"/>
+            </Property>
+            <Property name="gradient" type="boolean" value="true"/>
+            <Property name="gradientFinalColor" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="35" green="73" red="f3" type="rgb"/>
+            </Property>
+            <Property name="gradientFinalColorHover" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="0" green="67" red="e7" type="rgb"/>
+            </Property>
+            <Property name="gradientStartColor" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="30" green="c8" red="fd" type="rgb"/>
+            </Property>
+            <Property name="gradientStartColorHover" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="61" green="aa" red="fd" type="rgb"/>
+            </Property>
           </Properties>
         </Component>
       </SubComponents>
