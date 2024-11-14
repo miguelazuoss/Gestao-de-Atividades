@@ -4,9 +4,12 @@
  */
 package Telas;
 
+import Models.Usuario;
 import java.awt.Color;
+import java.awt.Dimension;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JScrollBar;
 
 /**
  *
@@ -16,13 +19,20 @@ public class Principal extends javax.swing.JFrame {
     /**
      * Creates new form Principal
      */
-    public Principal() {
+    
+    Usuario usuarioLogado;
+    public Principal(Usuario usuario) {
         initComponents();
-        cardButton1.setTemp1(cardButton1.getGradientStartColor());
-        cardButton1.setTemp2(cardButton1.getGradientFinalColor());
+        cardButtonPendentes.setTemp1(cardButtonPendentes.getGradientStartColor());
+        cardButtonPendentes.setTemp2(cardButtonPendentes.getGradientFinalColor());
+        cardButtonAndamento.setTemp1(cardButtonAndamento.getGradientStartColor());
+        cardButtonAndamento.setTemp2(cardButtonAndamento.getGradientFinalColor());
+        cardButtonConcluida.setTemp1(cardButtonConcluida.getGradientStartColor());
+        cardButtonConcluida.setTemp2(cardButtonConcluida.getGradientFinalColor());
         setBackground(new Color(0, 0, 0, 0));
         panelBorderWithRadius.initMoving(this);
-        buttonPersonalizado1.setText("<html><center>Atividades não iniciadas<br>0</center></html>");
+        usuarioLogado = usuario;
+        jlBemVindo.setText("Bem vindo "+usuario.getUser()+"!");
     }
 
     /**
@@ -38,10 +48,13 @@ public class Principal extends javax.swing.JFrame {
         menuPrincipal = new Components.MenuPrincipal();
         jbtExit = new javax.swing.JButton();
         jbtMinimize = new javax.swing.JButton();
-        buttonPersonalizado1 = new Components.ButtonPersonalizado();
-        buttonPersonalizado2 = new Components.ButtonPersonalizado();
-        buttonPersonalizado3 = new Components.ButtonPersonalizado();
-        cardButton1 = new Components.CardButton();
+        cardButtonPendentes = new Components.CardButton();
+        cardButtonAndamento = new Components.CardButton();
+        cardButtonConcluida = new Components.CardButton();
+        jlBemVindo = new javax.swing.JLabel();
+        jbtAccount = new javax.swing.JButton();
+        jspTable = new javax.swing.JScrollPane();
+        tablePersonalizado1 = new Components.TablePersonalizado();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -86,36 +99,116 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
-        buttonPersonalizado1.setBorder(null);
-        buttonPersonalizado1.setForeground(new java.awt.Color(255, 255, 255));
-        buttonPersonalizado1.setText("Atividades não iniciadas 5");
-        buttonPersonalizado1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        buttonPersonalizado1.setGradient(true);
-        buttonPersonalizado1.setGradientFinalColor(new java.awt.Color(243, 115, 53));
-        buttonPersonalizado1.setGradientStartColor(new java.awt.Color(253, 200, 48));
-        buttonPersonalizado1.setRadius(15);
-        buttonPersonalizado1.addActionListener(new java.awt.event.ActionListener() {
+        cardButtonPendentes.setColor(new java.awt.Color(255, 153, 153));
+        cardButtonPendentes.setColorClick(new java.awt.Color(255, 204, 102));
+        cardButtonPendentes.setGradient(true);
+        cardButtonPendentes.setGradientFinalColor(new java.awt.Color(243, 115, 53));
+        cardButtonPendentes.setGradientFinalColorHover(new java.awt.Color(231, 103, 0));
+        cardButtonPendentes.setGradientStartColor(new java.awt.Color(253, 200, 48));
+        cardButtonPendentes.setGradientStartColorHover(new java.awt.Color(253, 170, 97));
+        cardButtonPendentes.setRadius(15);
+
+        cardButtonAndamento.setColor(new java.awt.Color(0, 143, 249));
+        cardButtonAndamento.setColorClick(new java.awt.Color(102, 255, 255));
+        cardButtonAndamento.setGradient(true);
+        cardButtonAndamento.setGradientFinalColor(new java.awt.Color(0, 131, 176));
+        cardButtonAndamento.setGradientFinalColorHover(new java.awt.Color(0, 161, 220));
+        cardButtonAndamento.setGradientStartColor(new java.awt.Color(0, 180, 219));
+        cardButtonAndamento.setGradientStartColorHover(new java.awt.Color(0, 215, 246));
+        cardButtonAndamento.setRadius(15);
+        cardButtonAndamento.setValorTituloCard1("Atividades em andamento");
+
+        cardButtonConcluida.setColorClick(new java.awt.Color(51, 255, 153));
+        cardButtonConcluida.setGradient(true);
+        cardButtonConcluida.setGradientFinalColor(new java.awt.Color(17, 153, 142));
+        cardButtonConcluida.setGradientFinalColorHover(new java.awt.Color(17, 207, 168));
+        cardButtonConcluida.setGradientStartColor(new java.awt.Color(56, 239, 125));
+        cardButtonConcluida.setGradientStartColorHover(new java.awt.Color(56, 235, 189));
+        cardButtonConcluida.setRadius(15);
+        cardButtonConcluida.setValorTituloCard1("Atividades concluídas");
+
+        jlBemVindo.setFont(new java.awt.Font("Segoe UI", 1, 25)); // NOI18N
+        jlBemVindo.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jlBemVindo.setText("Bem vindo (Usuario)!");
+
+        jbtAccount.setBackground(new java.awt.Color(250, 250, 250));
+        jbtAccount.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/Account.png"))); // NOI18N
+        jbtAccount.setBorder(null);
+        jbtAccount.setBorderPainted(false);
+        jbtAccount.setContentAreaFilled(false);
+        jbtAccount.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jbtAccount.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                mouseAccountEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                mouseAccountExited(evt);
+            }
+        });
+        jbtAccount.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonPersonalizado1ActionPerformed(evt);
+                jbtAccountActionPerformed(evt);
             }
         });
 
-        buttonPersonalizado2.setText("buttonPersonalizado2");
-        buttonPersonalizado2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonPersonalizado2ActionPerformed(evt);
+        jspTable.getVerticalScrollBar().setPreferredSize(new Dimension(2, 2));
+        jspTable.setBackground(new java.awt.Color(250, 250, 250));
+        jspTable.setBorder(null);
+        jspTable.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        jspTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+
+        tablePersonalizado1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "ID", "Nome", "Ultimo andamento", "Dificuldade", "Data Criação", "Data Finalização", "Prazo (Dias)", "Status"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
-
-        buttonPersonalizado3.setText("buttonPersonalizado3");
-
-        cardButton1.setColor(new java.awt.Color(255, 153, 153));
-        cardButton1.setColorClick(new java.awt.Color(255, 102, 0));
-        cardButton1.setGradient(true);
-        cardButton1.setGradientFinalColor(new java.awt.Color(243, 115, 53));
-        cardButton1.setGradientFinalColorHover(new java.awt.Color(231, 103, 0));
-        cardButton1.setGradientStartColor(new java.awt.Color(253, 200, 48));
-        cardButton1.setGradientStartColorHover(new java.awt.Color(253, 170, 97));
+        tablePersonalizado1.setColumnSelectionAllowed(true);
+        tablePersonalizado1.setGridColor(new java.awt.Color(204, 204, 204));
+        tablePersonalizado1.setShowGrid(false);
+        tablePersonalizado1.setShowHorizontalLines(true);
+        jspTable.setViewportView(tablePersonalizado1);
+        tablePersonalizado1.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        if (tablePersonalizado1.getColumnModel().getColumnCount() > 0) {
+            tablePersonalizado1.getColumnModel().getColumn(0).setPreferredWidth(40);
+            tablePersonalizado1.getColumnModel().getColumn(0).setMaxWidth(40);
+            tablePersonalizado1.getColumnModel().getColumn(1).setPreferredWidth(120);
+            tablePersonalizado1.getColumnModel().getColumn(2).setPreferredWidth(220);
+            tablePersonalizado1.getColumnModel().getColumn(3).setPreferredWidth(80);
+            tablePersonalizado1.getColumnModel().getColumn(4).setMinWidth(80);
+            tablePersonalizado1.getColumnModel().getColumn(6).setMinWidth(80);
+            tablePersonalizado1.getColumnModel().getColumn(6).setPreferredWidth(80);
+            tablePersonalizado1.getColumnModel().getColumn(6).setMaxWidth(80);
+            tablePersonalizado1.getColumnModel().getColumn(7).setPreferredWidth(110);
+        }
 
         javax.swing.GroupLayout panelBorderWithRadiusLayout = new javax.swing.GroupLayout(panelBorderWithRadius);
         panelBorderWithRadius.setLayout(panelBorderWithRadiusLayout);
@@ -125,45 +218,51 @@ public class Principal extends javax.swing.JFrame {
                 .addComponent(menuPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(panelBorderWithRadiusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelBorderWithRadiusLayout.createSequentialGroup()
+                        .addGap(70, 70, 70)
+                        .addGroup(panelBorderWithRadiusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(panelBorderWithRadiusLayout.createSequentialGroup()
+                                .addComponent(cardButtonPendentes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(41, 41, 41)
+                                .addComponent(cardButtonAndamento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(41, 41, 41)
+                                .addComponent(cardButtonConcluida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(panelBorderWithRadiusLayout.createSequentialGroup()
+                                .addComponent(jlBemVindo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(4, 4, 4)
+                                .addComponent(jbtAccount, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jbtMinimize, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, 0)
                         .addComponent(jbtExit, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(5, 5, 5))
                     .addGroup(panelBorderWithRadiusLayout.createSequentialGroup()
-                        .addGap(72, 72, 72)
-                        .addComponent(buttonPersonalizado1, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(45, 45, 45)
-                        .addComponent(buttonPersonalizado2, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
-                        .addComponent(buttonPersonalizado3, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(70, 70, 70))
-                    .addGroup(panelBorderWithRadiusLayout.createSequentialGroup()
-                        .addGap(51, 51, 51)
-                        .addComponent(cardButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGap(18, 18, 18)
+                        .addComponent(jspTable, javax.swing.GroupLayout.PREFERRED_SIZE, 993, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(18, Short.MAX_VALUE))))
         );
         panelBorderWithRadiusLayout.setVerticalGroup(
             panelBorderWithRadiusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(menuPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, 715, Short.MAX_VALUE)
             .addGroup(panelBorderWithRadiusLayout.createSequentialGroup()
-                .addGap(2, 2, 2)
-                .addGroup(panelBorderWithRadiusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jbtMinimize, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(panelBorderWithRadiusLayout.createSequentialGroup()
-                        .addGap(3, 3, 3)
-                        .addComponent(jbtExit, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGroup(panelBorderWithRadiusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelBorderWithRadiusLayout.createSequentialGroup()
-                        .addGap(82, 82, 82)
-                        .addGroup(panelBorderWithRadiusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(buttonPersonalizado2, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(buttonPersonalizado3, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(2, 2, 2)
+                        .addGroup(panelBorderWithRadiusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jbtMinimize, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(panelBorderWithRadiusLayout.createSequentialGroup()
+                                .addGap(3, 3, 3)
+                                .addComponent(jbtExit, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jbtAccount)))
                     .addGroup(panelBorderWithRadiusLayout.createSequentialGroup()
-                        .addGap(84, 84, 84)
-                        .addComponent(buttonPersonalizado1, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(59, 59, 59)
-                .addComponent(cardButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(8, 8, 8)
+                        .addComponent(jlBemVindo)))
+                .addGap(29, 29, 29)
+                .addGroup(panelBorderWithRadiusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(cardButtonPendentes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cardButtonAndamento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cardButtonConcluida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(89, 89, 89)
+                .addComponent(jspTable, javax.swing.GroupLayout.PREFERRED_SIZE, 379, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -171,7 +270,7 @@ public class Principal extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelBorderWithRadius, javax.swing.GroupLayout.DEFAULT_SIZE, 1278, Short.MAX_VALUE)
+            .addComponent(panelBorderWithRadius, javax.swing.GroupLayout.DEFAULT_SIZE, 1286, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -212,60 +311,41 @@ public class Principal extends javax.swing.JFrame {
         this.setState(JFrame.ICONIFIED);
     }//GEN-LAST:event_jbtMinimizeActionPerformed
 
-    private void buttonPersonalizado2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonPersonalizado2ActionPerformed
+    private void jbtAccountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtAccountActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_buttonPersonalizado2ActionPerformed
+        Login telaLogin = new Login();
+        this.dispose();
+        telaLogin.setVisible(true);
+    }//GEN-LAST:event_jbtAccountActionPerformed
 
-    private void buttonPersonalizado1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonPersonalizado1ActionPerformed
+    private void mouseAccountEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mouseAccountEntered
         // TODO add your handling code here:
-    }//GEN-LAST:event_buttonPersonalizado1ActionPerformed
+        jbtAccount.setIcon(new ImageIcon(getClass().getResource("/Icon/AccountHover.png")));
+        Color corAzulHover = new Color(89,133,225);
+        jlBemVindo.setText("Deslogar da conta: ("+usuarioLogado.getUser()+")?");
+        jlBemVindo.setForeground(corAzulHover);
+    }//GEN-LAST:event_mouseAccountEntered
 
-    private void teste(){
-    }
+    private void mouseAccountExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mouseAccountExited
+        // TODO add your handling code here:
+        jbtAccount.setIcon(new ImageIcon(getClass().getResource("/Icon/Account.png")));
+        jlBemVindo.setText("Bem vindo "+ usuarioLogado.getUser()+"!");
+        jlBemVindo.setForeground(Color.BLACK);
+    }//GEN-LAST:event_mouseAccountExited
+
     
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Principal().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private Components.ButtonPersonalizado buttonPersonalizado1;
-    private Components.ButtonPersonalizado buttonPersonalizado2;
-    private Components.ButtonPersonalizado buttonPersonalizado3;
-    private Components.CardButton cardButton1;
+    private Components.CardButton cardButtonAndamento;
+    private Components.CardButton cardButtonConcluida;
+    private Components.CardButton cardButtonPendentes;
+    private javax.swing.JButton jbtAccount;
     private javax.swing.JButton jbtExit;
     private javax.swing.JButton jbtMinimize;
+    private javax.swing.JLabel jlBemVindo;
+    private javax.swing.JScrollPane jspTable;
     private Components.MenuPrincipal menuPrincipal;
     private Components.PanelBorder panelBorderWithRadius;
+    private Components.TablePersonalizado tablePersonalizado1;
     // End of variables declaration//GEN-END:variables
 }

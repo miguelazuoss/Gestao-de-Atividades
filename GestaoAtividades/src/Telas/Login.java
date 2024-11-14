@@ -338,7 +338,7 @@ public class Login extends javax.swing.JFrame {
                 String senha = new String(jpfSenha.getPassword());
                 Usuario usuario = usuarioDAO.logarUsuario(login, senha);
                 if(usuario != null) {
-                    Principal telaPrincipal = new Principal();
+                    Principal telaPrincipal = new Principal(usuario);
                     telaPrincipal.setVisible(true);
                     dispose();
                 }
@@ -348,9 +348,6 @@ public class Login extends javax.swing.JFrame {
         } else {
             aviso.MensagemErro("Usuario está vazio!");
         }
-        Principal telaPrincipal = new Principal();
-        telaPrincipal.setVisible(true);
-        dispose();
     }//GEN-LAST:event_buttonPersonalizadoEntrarActionPerformed
 
     private void buttonPersonalizadoRedefinirSenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonPersonalizadoRedefinirSenhaActionPerformed

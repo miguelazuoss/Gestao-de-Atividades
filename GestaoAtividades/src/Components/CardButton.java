@@ -35,6 +35,8 @@ public class CardButton extends javax.swing.JPanel {
     private Color gradientFinalColorHover;
     private int gradientX = 0;
     private int gradientY = 0;
+    private String valorTituloCard1 = "Atividades não iniciadas";
+    private String valorTituloCard2 = "0";
     
     public CardButton() {
         initComponents();
@@ -44,6 +46,8 @@ public class CardButton extends javax.swing.JPanel {
         colorOver = new Color(179, 250, 160);
         colorClick = new Color(152, 184, 144);
         borderColor = new Color(30, 136, 56);
+        jlTituloCard.setText(valorTituloCard1);
+        jlTituloCard1.setText(valorTituloCard2);
         // Listener para o botão
         
         
@@ -105,22 +109,6 @@ public class CardButton extends javax.swing.JPanel {
             }}
         });
            
-    }
-
-    public int getGradientX() {
-        return gradientX;
-    }
-
-    public void setGradientX(int gradientX) {
-        this.gradientX = gradientX;
-    }
-
-    public int getGradientY() {
-        return gradientY;
-    }
-
-    public void setGradientY(int gradientY) {
-        this.gradientY = gradientY;
     }
 
     public boolean isHover() {
@@ -244,6 +232,24 @@ public class CardButton extends javax.swing.JPanel {
     public void setTemp2(Color temp2) {
         this.temp2 = temp2;
     }
+
+    public String getValorTituloCard1() {
+        return valorTituloCard1;
+    }
+
+    public void setValorTituloCard1(String valorTituloCard1) {
+        this.valorTituloCard1 = valorTituloCard1;
+        jlTituloCard.setText(valorTituloCard1);   
+    }
+
+    public String getValorTituloCard2() {
+        return valorTituloCard2;
+    }
+
+    public void setValorTituloCard2(String valorTituloCard2) {
+        this.valorTituloCard2 = valorTituloCard2;
+        jlTituloCard1.setText(valorTituloCard2);
+    }
     
     
 
@@ -290,10 +296,9 @@ public class CardButton extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap(14, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jlTituloCard1, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jlTituloCard, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jlTituloCard1, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(14, Short.MAX_VALUE))
+            .addComponent(jlTituloCard, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
