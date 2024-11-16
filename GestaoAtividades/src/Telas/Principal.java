@@ -10,6 +10,7 @@ import java.awt.Dimension;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JScrollBar;
+import javax.swing.border.EmptyBorder;
 
 /**
  *
@@ -44,6 +45,7 @@ public class Principal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jTextField1 = new javax.swing.JTextField();
         panelBorderWithRadius = new Components.PanelBorder();
         menuPrincipal = new Components.MenuPrincipal();
         jbtExit = new javax.swing.JButton();
@@ -53,8 +55,16 @@ public class Principal extends javax.swing.JFrame {
         cardButtonConcluida = new Components.CardButton();
         jlBemVindo = new javax.swing.JLabel();
         jbtAccount = new javax.swing.JButton();
+        buttonPersonalizadoLimpar = new Components.ButtonPersonalizado();
+        buttonPersonalizadoOrdPrazo = new Components.ButtonPersonalizado();
+        buttonPersonalizadoOrdDif = new Components.ButtonPersonalizado();
+        jtfSearchBar = new javax.swing.JTextField();
+        jcbFiltro = new javax.swing.JComboBox<>();
+        jbtSearch = new javax.swing.JButton();
         jspTable = new javax.swing.JScrollPane();
-        tablePersonalizado1 = new Components.TablePersonalizado();
+        tablePersonalizadoAtividades = new Components.TablePersonalizado();
+
+        jTextField1.setText("jTextField1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -151,33 +161,94 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
+        buttonPersonalizadoLimpar.setForeground(new java.awt.Color(255, 255, 255));
+        buttonPersonalizadoLimpar.setText("Limpar filtro");
+        buttonPersonalizadoLimpar.setBorderPainted(false);
+        buttonPersonalizadoLimpar.setColor(new java.awt.Color(0, 0, 0));
+        buttonPersonalizadoLimpar.setColorClick(new java.awt.Color(153, 153, 153));
+        buttonPersonalizadoLimpar.setColorOver(new java.awt.Color(102, 102, 102));
+        buttonPersonalizadoLimpar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        buttonPersonalizadoLimpar.setRadius(15);
+        buttonPersonalizadoLimpar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonPersonalizadoLimparActionPerformed(evt);
+            }
+        });
+
+        buttonPersonalizadoOrdPrazo.setForeground(new java.awt.Color(255, 255, 255));
+        buttonPersonalizadoOrdPrazo.setText("Ordenar por Prazo");
+        buttonPersonalizadoOrdPrazo.setBorderPainted(false);
+        buttonPersonalizadoOrdPrazo.setColor(new java.awt.Color(0, 0, 0));
+        buttonPersonalizadoOrdPrazo.setColorClick(new java.awt.Color(153, 153, 153));
+        buttonPersonalizadoOrdPrazo.setColorOver(new java.awt.Color(102, 102, 102));
+        buttonPersonalizadoOrdPrazo.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        buttonPersonalizadoOrdPrazo.setRadius(15);
+
+        buttonPersonalizadoOrdDif.setForeground(new java.awt.Color(255, 255, 255));
+        buttonPersonalizadoOrdDif.setText("Ordenar por dificuldade");
+        buttonPersonalizadoOrdDif.setBorderPainted(false);
+        buttonPersonalizadoOrdDif.setColor(new java.awt.Color(0, 0, 0));
+        buttonPersonalizadoOrdDif.setColorClick(new java.awt.Color(153, 153, 153));
+        buttonPersonalizadoOrdDif.setColorOver(new java.awt.Color(102, 102, 102));
+        buttonPersonalizadoOrdDif.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        buttonPersonalizadoOrdDif.setRadius(15);
+        buttonPersonalizadoOrdDif.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonPersonalizadoOrdDifActionPerformed(evt);
+            }
+        });
+
+        jtfSearchBar.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
+        jtfSearchBar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jtfSearchBarActionPerformed(evt);
+            }
+        });
+
+        jcbFiltro.setBackground(Color.WHITE);
+        jcbFiltro.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "Nome" }));
+        jcbFiltro.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1)));
+        jcbFiltro.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jcbFiltro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jcbFiltroActionPerformed(evt);
+            }
+        });
+
+        jbtSearch.setBackground(new java.awt.Color(250, 250, 250));
+        jbtSearch.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/Search.png"))); // NOI18N
+        jbtSearch.setBorderPainted(false);
+        jbtSearch.setContentAreaFilled(false);
+        jbtSearch.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jbtSearch.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jbtSearchMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jbtSearchMouseExited(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jbtSearchMousePressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                jbtSearchMouseReleased(evt);
+            }
+        });
+        jbtSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtSearchActionPerformed(evt);
+            }
+        });
+
         jspTable.getVerticalScrollBar().setPreferredSize(new Dimension(2, 2));
         jspTable.setBackground(new java.awt.Color(250, 250, 250));
         jspTable.setBorder(null);
         jspTable.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         jspTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
-        tablePersonalizado1.setModel(new javax.swing.table.DefaultTableModel(
+        tablePersonalizadoAtividades.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null}
+
             },
             new String [] {
                 "ID", "Nome", "Ultimo andamento", "Dificuldade", "Data Criação", "Data Finalização", "Prazo (Dias)", "Status"
@@ -191,23 +262,23 @@ public class Principal extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        tablePersonalizado1.setColumnSelectionAllowed(true);
-        tablePersonalizado1.setGridColor(new java.awt.Color(204, 204, 204));
-        tablePersonalizado1.setShowGrid(false);
-        tablePersonalizado1.setShowHorizontalLines(true);
-        jspTable.setViewportView(tablePersonalizado1);
-        tablePersonalizado1.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        if (tablePersonalizado1.getColumnModel().getColumnCount() > 0) {
-            tablePersonalizado1.getColumnModel().getColumn(0).setPreferredWidth(40);
-            tablePersonalizado1.getColumnModel().getColumn(0).setMaxWidth(40);
-            tablePersonalizado1.getColumnModel().getColumn(1).setPreferredWidth(120);
-            tablePersonalizado1.getColumnModel().getColumn(2).setPreferredWidth(220);
-            tablePersonalizado1.getColumnModel().getColumn(3).setPreferredWidth(80);
-            tablePersonalizado1.getColumnModel().getColumn(4).setMinWidth(80);
-            tablePersonalizado1.getColumnModel().getColumn(6).setMinWidth(80);
-            tablePersonalizado1.getColumnModel().getColumn(6).setPreferredWidth(80);
-            tablePersonalizado1.getColumnModel().getColumn(6).setMaxWidth(80);
-            tablePersonalizado1.getColumnModel().getColumn(7).setPreferredWidth(110);
+        tablePersonalizadoAtividades.setColumnSelectionAllowed(true);
+        tablePersonalizadoAtividades.setGridColor(new java.awt.Color(204, 204, 204));
+        tablePersonalizadoAtividades.setShowGrid(false);
+        tablePersonalizadoAtividades.setShowHorizontalLines(true);
+        jspTable.setViewportView(tablePersonalizadoAtividades);
+        tablePersonalizadoAtividades.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        if (tablePersonalizadoAtividades.getColumnModel().getColumnCount() > 0) {
+            tablePersonalizadoAtividades.getColumnModel().getColumn(0).setPreferredWidth(40);
+            tablePersonalizadoAtividades.getColumnModel().getColumn(0).setMaxWidth(40);
+            tablePersonalizadoAtividades.getColumnModel().getColumn(1).setPreferredWidth(120);
+            tablePersonalizadoAtividades.getColumnModel().getColumn(2).setPreferredWidth(220);
+            tablePersonalizadoAtividades.getColumnModel().getColumn(3).setPreferredWidth(80);
+            tablePersonalizadoAtividades.getColumnModel().getColumn(4).setMinWidth(80);
+            tablePersonalizadoAtividades.getColumnModel().getColumn(6).setMinWidth(80);
+            tablePersonalizadoAtividades.getColumnModel().getColumn(6).setPreferredWidth(80);
+            tablePersonalizadoAtividades.getColumnModel().getColumn(6).setMaxWidth(80);
+            tablePersonalizadoAtividades.getColumnModel().getColumn(7).setPreferredWidth(110);
         }
 
         javax.swing.GroupLayout panelBorderWithRadiusLayout = new javax.swing.GroupLayout(panelBorderWithRadius);
@@ -218,63 +289,93 @@ public class Principal extends javax.swing.JFrame {
                 .addComponent(menuPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(panelBorderWithRadiusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelBorderWithRadiusLayout.createSequentialGroup()
-                        .addGap(70, 70, 70)
-                        .addGroup(panelBorderWithRadiusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(panelBorderWithRadiusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(panelBorderWithRadiusLayout.createSequentialGroup()
-                                .addComponent(cardButtonPendentes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(41, 41, 41)
-                                .addComponent(cardButtonAndamento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(41, 41, 41)
-                                .addComponent(cardButtonConcluida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(75, 75, 75)
+                                .addGroup(panelBorderWithRadiusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(panelBorderWithRadiusLayout.createSequentialGroup()
+                                        .addComponent(buttonPersonalizadoOrdDif, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(buttonPersonalizadoOrdPrazo, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(buttonPersonalizadoLimpar, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(panelBorderWithRadiusLayout.createSequentialGroup()
+                                        .addComponent(cardButtonPendentes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(41, 41, 41)
+                                        .addComponent(cardButtonAndamento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(41, 41, 41)
+                                        .addComponent(cardButtonConcluida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(44, 44, 44))))
                             .addGroup(panelBorderWithRadiusLayout.createSequentialGroup()
-                                .addComponent(jlBemVindo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jcbFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jtfSearchBar, javax.swing.GroupLayout.PREFERRED_SIZE, 889, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jbtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelBorderWithRadiusLayout.createSequentialGroup()
+                        .addGap(27, 27, 27)
+                        .addGroup(panelBorderWithRadiusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelBorderWithRadiusLayout.createSequentialGroup()
+                                .addComponent(jlBemVindo, javax.swing.GroupLayout.PREFERRED_SIZE, 837, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(4, 4, 4)
-                                .addComponent(jbtAccount, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jbtMinimize, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, 0)
-                        .addComponent(jbtExit, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(5, 5, 5))
-                    .addGroup(panelBorderWithRadiusLayout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(jspTable, javax.swing.GroupLayout.PREFERRED_SIZE, 993, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(18, Short.MAX_VALUE))))
+                                .addComponent(jbtAccount, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jbtMinimize, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, 0)
+                                .addComponent(jbtExit, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(5, 5, 5))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelBorderWithRadiusLayout.createSequentialGroup()
+                                .addComponent(jspTable, javax.swing.GroupLayout.PREFERRED_SIZE, 993, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(22, 22, 22))))))
         );
         panelBorderWithRadiusLayout.setVerticalGroup(
             panelBorderWithRadiusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(menuPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, 715, Short.MAX_VALUE)
+            .addComponent(menuPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(panelBorderWithRadiusLayout.createSequentialGroup()
+                .addGap(2, 2, 2)
                 .addGroup(panelBorderWithRadiusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jbtMinimize, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(panelBorderWithRadiusLayout.createSequentialGroup()
-                        .addGap(2, 2, 2)
-                        .addGroup(panelBorderWithRadiusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jbtMinimize, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(panelBorderWithRadiusLayout.createSequentialGroup()
-                                .addGap(3, 3, 3)
-                                .addComponent(jbtExit, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jbtAccount)))
+                        .addGap(3, 3, 3)
+                        .addComponent(jbtExit, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jbtAccount)
                     .addGroup(panelBorderWithRadiusLayout.createSequentialGroup()
-                        .addGap(8, 8, 8)
+                        .addGap(6, 6, 6)
                         .addComponent(jlBemVindo)))
-                .addGap(29, 29, 29)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(panelBorderWithRadiusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(cardButtonPendentes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cardButtonAndamento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cardButtonConcluida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(89, 89, 89)
+                .addGap(20, 20, 20)
+                .addGroup(panelBorderWithRadiusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jbtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(panelBorderWithRadiusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jtfSearchBar, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jcbFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(panelBorderWithRadiusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(buttonPersonalizadoLimpar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(buttonPersonalizadoOrdPrazo, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(buttonPersonalizadoOrdDif, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
                 .addComponent(jspTable, javax.swing.GroupLayout.PREFERRED_SIZE, 379, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(17, 17, 17))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelBorderWithRadius, javax.swing.GroupLayout.DEFAULT_SIZE, 1286, Short.MAX_VALUE)
+            .addComponent(panelBorderWithRadius, javax.swing.GroupLayout.DEFAULT_SIZE, 1299, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelBorderWithRadius, 715, 715, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(panelBorderWithRadius, javax.swing.GroupLayout.DEFAULT_SIZE, 723, Short.MAX_VALUE)
+                .addGap(0, 0, 0))
         );
 
         pack();
@@ -333,19 +434,66 @@ public class Principal extends javax.swing.JFrame {
         jlBemVindo.setForeground(Color.BLACK);
     }//GEN-LAST:event_mouseAccountExited
 
+    private void buttonPersonalizadoOrdDifActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonPersonalizadoOrdDifActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_buttonPersonalizadoOrdDifActionPerformed
+
+    private void buttonPersonalizadoLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonPersonalizadoLimparActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_buttonPersonalizadoLimparActionPerformed
+
+    private void jcbFiltroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbFiltroActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jcbFiltroActionPerformed
+
+    private void jtfSearchBarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfSearchBarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jtfSearchBarActionPerformed
+
+    private void jbtSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtSearchActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jbtSearchActionPerformed
+
+    private void jbtSearchMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbtSearchMouseEntered
+        // TODO add your handling code here:
+        jbtSearch.setIcon(new ImageIcon(getClass().getResource("/Icon/SearchHover.png")));
+    }//GEN-LAST:event_jbtSearchMouseEntered
+
+    private void jbtSearchMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbtSearchMouseExited
+        // TODO add your handling code here:
+        jbtSearch.setIcon(new ImageIcon(getClass().getResource("/Icon/Search.png")));
+    }//GEN-LAST:event_jbtSearchMouseExited
+
+    private void jbtSearchMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbtSearchMousePressed
+        // TODO add your handling code here:
+        jbtSearch.setIcon(new ImageIcon(getClass().getResource("/Icon/SearchClick.png")));
+    }//GEN-LAST:event_jbtSearchMousePressed
+
+    private void jbtSearchMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbtSearchMouseReleased
+        // TODO add your handling code here:
+        jbtSearch.setIcon(new ImageIcon(getClass().getResource("/Icon/Search.png")));
+    }//GEN-LAST:event_jbtSearchMouseReleased
+
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private Components.ButtonPersonalizado buttonPersonalizadoLimpar;
+    private Components.ButtonPersonalizado buttonPersonalizadoOrdDif;
+    private Components.ButtonPersonalizado buttonPersonalizadoOrdPrazo;
     private Components.CardButton cardButtonAndamento;
     private Components.CardButton cardButtonConcluida;
     private Components.CardButton cardButtonPendentes;
+    private javax.swing.JTextField jTextField1;
     private javax.swing.JButton jbtAccount;
     private javax.swing.JButton jbtExit;
     private javax.swing.JButton jbtMinimize;
+    private javax.swing.JButton jbtSearch;
+    private javax.swing.JComboBox<String> jcbFiltro;
     private javax.swing.JLabel jlBemVindo;
     private javax.swing.JScrollPane jspTable;
+    private javax.swing.JTextField jtfSearchBar;
     private Components.MenuPrincipal menuPrincipal;
     private Components.PanelBorder panelBorderWithRadius;
-    private Components.TablePersonalizado tablePersonalizado1;
+    private Components.TablePersonalizado tablePersonalizadoAtividades;
     // End of variables declaration//GEN-END:variables
 }

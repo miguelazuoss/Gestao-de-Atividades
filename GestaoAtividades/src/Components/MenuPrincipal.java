@@ -46,6 +46,9 @@ public class MenuPrincipal extends javax.swing.JPanel {
 
         jlMy = new javax.swing.JLabel();
         jlActivities = new javax.swing.JLabel();
+        jbtCadastrarAtividade = new javax.swing.JButton();
+        jbtRedefinirSenha = new javax.swing.JButton();
+        jbtExcluirAtividade = new javax.swing.JButton();
 
         jlMy.setFont(new java.awt.Font("Segoe UI", 1, 45)); // NOI18N
         jlMy.setForeground(new java.awt.Color(255, 255, 255));
@@ -55,16 +58,79 @@ public class MenuPrincipal extends javax.swing.JPanel {
         jlActivities.setForeground(new java.awt.Color(255, 255, 255));
         jlActivities.setText("Activities");
 
+        jbtCadastrarAtividade.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jbtCadastrarAtividade.setForeground(new java.awt.Color(255, 255, 255));
+        jbtCadastrarAtividade.setText("Cadastrar Atividade");
+        jbtCadastrarAtividade.setBorderPainted(false);
+        jbtCadastrarAtividade.setContentAreaFilled(false);
+        jbtCadastrarAtividade.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jbtCadastrarAtividade.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jbtCadastrarAtividadeMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jbtCadastrarAtividadeMouseExited(evt);
+            }
+        });
+
+        jbtRedefinirSenha.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jbtRedefinirSenha.setForeground(new java.awt.Color(255, 255, 255));
+        jbtRedefinirSenha.setText("Redefinir Senha");
+        jbtRedefinirSenha.setBorderPainted(false);
+        jbtRedefinirSenha.setContentAreaFilled(false);
+        jbtRedefinirSenha.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jbtRedefinirSenha.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jbtRedefinirSenhaMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jbtRedefinirSenhaMouseExited(evt);
+            }
+        });
+        jbtRedefinirSenha.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtRedefinirSenhaActionPerformed(evt);
+            }
+        });
+
+        jbtExcluirAtividade.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jbtExcluirAtividade.setForeground(new java.awt.Color(255, 255, 255));
+        jbtExcluirAtividade.setText("Excluir Atividade");
+        jbtExcluirAtividade.setBorderPainted(false);
+        jbtExcluirAtividade.setContentAreaFilled(false);
+        jbtExcluirAtividade.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jbtExcluirAtividade.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jbtExcluirAtividadeMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jbtExcluirAtividadeMouseExited(evt);
+            }
+        });
+        jbtExcluirAtividade.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtExcluirAtividadeActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(29, 29, 29)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jlActivities)
-                    .addComponent(jlMy))
-                .addContainerGap(31, Short.MAX_VALUE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jbtCadastrarAtividade, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                            .addGap(29, 29, 29)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jlActivities)
+                                .addComponent(jlMy))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(35, 35, 35)
+                        .addComponent(jbtRedefinirSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jbtExcluirAtividade, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(49, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -73,12 +139,62 @@ public class MenuPrincipal extends javax.swing.JPanel {
                 .addComponent(jlMy)
                 .addGap(0, 0, 0)
                 .addComponent(jlActivities)
-                .addContainerGap(546, Short.MAX_VALUE))
+                .addGap(33, 33, 33)
+                .addComponent(jbtCadastrarAtividade)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jbtExcluirAtividade)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 405, Short.MAX_VALUE)
+                .addComponent(jbtRedefinirSenha)
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jbtCadastrarAtividadeMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbtCadastrarAtividadeMouseEntered
+        // TODO add your handling code here:
+        Color corAzulHover = new Color(89,133,225);
+        jbtCadastrarAtividade.setForeground(corAzulHover);
+    }//GEN-LAST:event_jbtCadastrarAtividadeMouseEntered
+
+    private void jbtCadastrarAtividadeMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbtCadastrarAtividadeMouseExited
+        // TODO add your handling code here:
+        jbtCadastrarAtividade.setForeground(Color.WHITE);
+    }//GEN-LAST:event_jbtCadastrarAtividadeMouseExited
+
+    private void jbtRedefinirSenhaMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbtRedefinirSenhaMouseEntered
+        // TODO add your handling code here:
+               Color corAzulHover = new Color(89,133,225);
+        jbtRedefinirSenha.setForeground(corAzulHover);
+    }//GEN-LAST:event_jbtRedefinirSenhaMouseEntered
+
+    private void jbtRedefinirSenhaMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbtRedefinirSenhaMouseExited
+        // TODO add your handling code here:
+                jbtRedefinirSenha.setForeground(Color.WHITE);
+    }//GEN-LAST:event_jbtRedefinirSenhaMouseExited
+
+    private void jbtRedefinirSenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtRedefinirSenhaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jbtRedefinirSenhaActionPerformed
+
+    private void jbtExcluirAtividadeMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbtExcluirAtividadeMouseEntered
+        // TODO add your handling code here:
+                       Color corAzulHover = new Color(89,133,225);
+        jbtExcluirAtividade.setForeground(corAzulHover);
+    }//GEN-LAST:event_jbtExcluirAtividadeMouseEntered
+
+    private void jbtExcluirAtividadeMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbtExcluirAtividadeMouseExited
+        // TODO add your handling code here:
+                        jbtExcluirAtividade.setForeground(Color.WHITE);
+    }//GEN-LAST:event_jbtExcluirAtividadeMouseExited
+
+    private void jbtExcluirAtividadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtExcluirAtividadeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jbtExcluirAtividadeActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jbtCadastrarAtividade;
+    private javax.swing.JButton jbtExcluirAtividade;
+    private javax.swing.JButton jbtRedefinirSenha;
     private javax.swing.JLabel jlActivities;
     private javax.swing.JLabel jlMy;
     // End of variables declaration//GEN-END:variables
