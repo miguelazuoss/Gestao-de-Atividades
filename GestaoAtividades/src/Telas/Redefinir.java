@@ -312,6 +312,9 @@ public class Redefinir extends javax.swing.JFrame {
                 String email = jtfEmail.getText().trim();
                 String senha = new String(jpfSenha.getPassword());
                 usuarioDAO.alterarSenha(email, senha);
+                Login telaLogin = new Login();
+                dispose();
+                telaLogin.setVisible(true);
             } else {
                 aviso.MensagemErro("Senha está vazia!");
             }

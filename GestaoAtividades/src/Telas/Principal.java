@@ -47,7 +47,7 @@ public class Principal extends javax.swing.JFrame {
 
         jTextField1 = new javax.swing.JTextField();
         panelBorderWithRadius = new Components.PanelBorder();
-        menuPrincipal = new Components.MenuPrincipal();
+        menuPrincipal = new Components.MenuPrincipal(this, usuarioLogado);
         jbtExit = new javax.swing.JButton();
         jbtMinimize = new javax.swing.JButton();
         cardButtonPendentes = new Components.CardButton();
@@ -369,7 +369,7 @@ public class Principal extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelBorderWithRadius, javax.swing.GroupLayout.DEFAULT_SIZE, 1299, Short.MAX_VALUE)
+            .addComponent(panelBorderWithRadius, javax.swing.GroupLayout.PREFERRED_SIZE, 1299, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

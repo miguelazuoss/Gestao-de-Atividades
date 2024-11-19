@@ -371,6 +371,10 @@ public class Cadastro extends javax.swing.JFrame {
                     String email = jtfEmail.getText().trim();
                     Usuario usuario = new Usuario(login, senha, email);
                     usuarioDAO.cadastrarUsuario(usuario);
+                    
+                    Login telaLogin = new Login();
+                    dispose();
+                    telaLogin.setVisible(true);
                 } else {
                     aviso.MensagemErro("Email está vazio!");
                 }

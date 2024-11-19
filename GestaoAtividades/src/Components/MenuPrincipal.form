@@ -97,6 +97,7 @@
       <Events>
         <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jbtCadastrarAtividadeMouseEntered"/>
         <EventHandler event="mouseExited" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jbtCadastrarAtividadeMouseExited"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtCadastrarAtividadeActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="jbtRedefinirSenha">

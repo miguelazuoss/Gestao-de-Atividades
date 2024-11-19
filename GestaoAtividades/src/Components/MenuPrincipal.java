@@ -4,6 +4,9 @@
  */
 package Components;
 
+import Models.Usuario;
+import Telas.CadastrarAtividade;
+import Telas.Principal;
 import java.awt.Color;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
@@ -19,11 +22,15 @@ public class MenuPrincipal extends javax.swing.JPanel {
     /**
      * Creates new form MenuPrincipal
      */
-    public MenuPrincipal() {
+    Usuario usuarioLogado;
+    Principal principal;
+    public MenuPrincipal(Principal principalFrame,Usuario usuario) {
         initComponents();
         setOpaque(false);
+        usuarioLogado = usuario;
+        principal = principalFrame;
     }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -70,6 +77,11 @@ public class MenuPrincipal extends javax.swing.JPanel {
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 jbtCadastrarAtividadeMouseExited(evt);
+            }
+        });
+        jbtCadastrarAtividade.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtCadastrarAtividadeActionPerformed(evt);
             }
         });
 
@@ -189,6 +201,13 @@ public class MenuPrincipal extends javax.swing.JPanel {
     private void jbtExcluirAtividadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtExcluirAtividadeActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jbtExcluirAtividadeActionPerformed
+
+    private void jbtCadastrarAtividadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtCadastrarAtividadeActionPerformed
+        // TODO add your handling code here:
+        CadastrarAtividade telaCadastroAtividade = new CadastrarAtividade(usuarioLogado);
+        telaCadastroAtividade.setVisible(true);
+        principal.dispose();
+    }//GEN-LAST:event_jbtCadastrarAtividadeActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
