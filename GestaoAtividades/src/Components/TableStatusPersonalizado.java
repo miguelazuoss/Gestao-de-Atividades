@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Components;
 
 import Models.StatusType;
@@ -12,38 +8,32 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import javax.swing.JLabel;
 
-/**
- *
- * @author user
- */
 public class TableStatusPersonalizado extends JLabel {
 
-    public StatusType getType() {
-        return type;
-    }
+    private StatusType type;
 
     public TableStatusPersonalizado() {
         setForeground(Color.WHITE);
     }
 
-    private StatusType type;
+    public StatusType getType() {
+        return type;
+    }
 
     public void setType(StatusType type) {
-    this.type = type;
-    if (type != null) {
-        String typeString;
-        if ("Pendente".equals(type.toString())) {
-            typeString = "Pendente";
-        } else if ("Andamento".equals(type.toString())) {
-            typeString = "Ativo";
-        } else {
-            typeString = "Concluído";
+        this.type = type;
+        if (type != null) {
+            String typeString;
+            if ("Pendente".equals(type.toString())) {
+                typeString = "Pendente";
+            } else if ("Ativo".equals(type.toString())) {
+                typeString = "Ativo";
+            } else {
+                typeString = "Concluído";
+            }
+            setText(typeString);
         }
-        setText(typeString);
-    } else {
-        setText("Indefinido"); // Texto padrão para status indefinido
-    }
-    repaint();
+        repaint();
     }
 
     @Override
@@ -53,14 +43,14 @@ public class TableStatusPersonalizado extends JLabel {
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             GradientPaint g;
             if (type == StatusType.Pendente) {
-                g = new GradientPaint(0, 0, new Color(186, 123, 247), 0, getHeight(), new Color(167, 94, 236));
-            } else if (type == StatusType.Andamento) {
-                g = new GradientPaint(0, 0, new Color(142, 142, 250), 0, getHeight(), new Color(123, 123, 245));
+                g = new GradientPaint(0, 0, new Color(253, 200, 48), 0, getHeight(), new Color(243, 115, 53));
+            } else if (type == StatusType.Ativo) {
+                g = new GradientPaint(0, 0, new Color(0, 180, 219), 0, getHeight(), new Color(0,131,176));
             } else {
-                g = new GradientPaint(0, 0, new Color(241, 208, 62), 0, getHeight(), new Color(211, 184, 61));
+                g = new GradientPaint(0, 0, new Color(0, 242, 96), 0, getHeight(), new Color(5, 117, 230));
             }
             g2.setPaint(g);
-            g2.fillRoundRect(0, 0, getWidth(), getHeight(), 1, 1);
+            g2.fillRoundRect(0, 0, getWidth(), getHeight(), 15, 15);
         }
         super.paintComponent(grphcs);
     }

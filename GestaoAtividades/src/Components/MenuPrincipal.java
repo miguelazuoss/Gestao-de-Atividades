@@ -25,12 +25,16 @@ public class MenuPrincipal extends javax.swing.JPanel {
     Usuario usuarioLogado;
     Principal principal;
     public MenuPrincipal(Principal principalFrame,Usuario usuario) {
-        initComponents();
-        setOpaque(false);
         usuarioLogado = usuario;
         principal = principalFrame;
+        initComponents();
+        setOpaque(false);
     }
     
+    public MenuPrincipal(){
+        initComponents();
+        setOpaque(false);
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

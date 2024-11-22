@@ -17,7 +17,7 @@ public class ConexaoBanco {
     Aviso aviso = new Aviso();
     public Connection getConexao() {
         try {
-            return DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/gestao_atividades", "root", "senai");
+            return DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/gestaoatividades", "root", "");
         } catch (Exception e) {
             aviso.MensagemErro("Erro de conexão com o banco!");
             return null;

@@ -12,12 +12,13 @@ import java.time.LocalDate;
  */
 public class Atividade {
    private int codigo, usuario_codigo, prazo;
-   private String nome, obj, andamento,dificuldade,status;
+   private String nome, obj, andamento,dificuldade;
    private LocalDate data_criacao, data_finalizacao;
+   private StatusType status;
    
    public Atividade(){}
 
-    public Atividade(int codigo, int usuario_codigo, int prazo, String nome, String obj, String andamento, String dificuldade, String status, LocalDate data_criacao, LocalDate data_finalizacao) {
+    public Atividade(int codigo, int usuario_codigo, int prazo, String nome, String obj, String andamento, String dificuldade, StatusType status, LocalDate data_criacao, LocalDate data_finalizacao) {
         this.codigo = codigo;
         this.usuario_codigo = usuario_codigo;
         this.prazo = prazo;
@@ -30,7 +31,7 @@ public class Atividade {
         this.data_finalizacao = data_finalizacao;
     }
 
-    public Atividade(int usuario_codigo, int prazo, String nome, String obj, String dificuldade, String status, LocalDate data_criacao) {
+    public Atividade(int usuario_codigo, int prazo, String nome, String obj, String andamento, String dificuldade, StatusType status, LocalDate data_criacao) {
         this.usuario_codigo = usuario_codigo;
         this.prazo = prazo;
         this.nome = nome;
@@ -38,17 +39,17 @@ public class Atividade {
         this.dificuldade = dificuldade;
         this.status = status;
         this.data_criacao = data_criacao;
+        this.andamento = andamento;
     }
 
-    public Atividade(int usuario_codigo, int prazo, String nome, String obj, String andamento, String dificuldade, String status, LocalDate data_criacao) {
+    public Atividade(int usuario_codigo, int prazo, String nome, String obj, String dificuldade, StatusType status) {
         this.usuario_codigo = usuario_codigo;
         this.prazo = prazo;
         this.nome = nome;
         this.obj = obj;
-        this.andamento = andamento;
         this.dificuldade = dificuldade;
         this.status = status;
-        this.data_criacao = data_criacao;
+        this.data_criacao = LocalDate.now();
     }
 
     public int getCodigo() {
@@ -107,11 +108,11 @@ public class Atividade {
         this.dificuldade = dificuldade;
     }
 
-    public String getStatus() {
+    public StatusType getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(StatusType status) {
         this.status = status;
     }
 

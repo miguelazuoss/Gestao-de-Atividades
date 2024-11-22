@@ -4,8 +4,13 @@
  */
 package Telas;
 
+import DAO.AtividadeDAO;
+import Models.Atividade;
+import Models.StatusType;
 import Models.Usuario;
 import java.awt.Color;
+import static java.lang.Double.isNaN;
+import javax.swing.ImageIcon;
 
 /**
  *
@@ -16,10 +21,15 @@ public class CadastrarAtividade extends javax.swing.JFrame {
     /**
      * Creates new form CadastrarAtividade
      */
+    Aviso aviso = new Aviso();
+    AtividadeDAO atividadeDAO = new AtividadeDAO();
+    Usuario usuarioLogado;
+
     public CadastrarAtividade(Usuario usuario) {
+        usuarioLogado = usuario;
         initComponents();
         setBackground(new Color(0, 0, 0, 0)); // Atribuindo o fundo para ser transparente ( para aparecer a borda arredondada )
-        PanelBorderWithRadius.initMoving(this); // Atribuindo o frame no metodo para o a movimentação da tela
+        PanelBorderWithRadius.initMoving(this); // Atribuindo o frame no metodo para o a movimentação da tela      
     }
 
     /**
@@ -36,7 +46,18 @@ public class CadastrarAtividade extends javax.swing.JFrame {
         jpBordaReta = new javax.swing.JPanel();
         jlTitulo = new javax.swing.JLabel();
         jlNome = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        jtfNomeAtiv = new javax.swing.JTextField();
+        jlObjetivo = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jtaObjetivo = new javax.swing.JTextArea();
+        jlDificuldade = new javax.swing.JLabel();
+        jcbDificuldade = new javax.swing.JComboBox<>();
+        jlStatus = new javax.swing.JLabel();
+        jlPrazo = new javax.swing.JLabel();
+        jtfPrazo = new javax.swing.JTextField();
+        buttonPersonalizadoCriar = new Components.ButtonPersonalizado();
+        jcbStatus = new javax.swing.JComboBox<>();
+        jbtBack = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -71,7 +92,7 @@ public class CadastrarAtividade extends javax.swing.JFrame {
             .addGroup(panelBorderTituloLayout.createSequentialGroup()
                 .addGap(50, 50, 50)
                 .addComponent(jlTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 664, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(49, Short.MAX_VALUE))
         );
         panelBorderTituloLayout.setVerticalGroup(
             panelBorderTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -82,13 +103,87 @@ public class CadastrarAtividade extends javax.swing.JFrame {
                 .addComponent(jpBordaReta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        jlNome.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jlNome.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
         jlNome.setText("Nome da atividade:");
 
-        jTextField1.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        jtfNomeAtiv.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jtfNomeAtiv.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jtfNomeAtiv.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                jtfNomeAtivActionPerformed(evt);
+            }
+        });
+
+        jlObjetivo.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        jlObjetivo.setText("Objetivo da atividade:");
+
+        jtaObjetivo.setColumns(20);
+        jtaObjetivo.setRows(5);
+        jtaObjetivo.setBorder(null);
+        jScrollPane1.setViewportView(jtaObjetivo);
+
+        jlDificuldade.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        jlDificuldade.setText("Dificuldade:");
+
+        jcbDificuldade.setBackground(Color.WHITE);
+        jcbDificuldade.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Fácil", "Médio", "Difícil" }));
+        jcbDificuldade.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1)));
+        jcbDificuldade.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+
+        jlStatus.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        jlStatus.setText("Status");
+
+        jlPrazo.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        jlPrazo.setText("Prazo em dias");
+
+        jtfPrazo.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jtfPrazo.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jtfPrazo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jtfPrazoActionPerformed(evt);
+            }
+        });
+
+        buttonPersonalizadoCriar.setBackground(new java.awt.Color(20, 208, 130));
+        buttonPersonalizadoCriar.setForeground(new java.awt.Color(255, 255, 255));
+        buttonPersonalizadoCriar.setText("Criar Atividade");
+        buttonPersonalizadoCriar.setColor(new java.awt.Color(20, 208, 130));
+        buttonPersonalizadoCriar.setColorClick(new java.awt.Color(204, 255, 204));
+        buttonPersonalizadoCriar.setColorOver(new java.awt.Color(51, 255, 51));
+        buttonPersonalizadoCriar.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        buttonPersonalizadoCriar.setRadius(15);
+        buttonPersonalizadoCriar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonPersonalizadoCriarActionPerformed(evt);
+            }
+        });
+
+        jcbStatus.setBackground(Color.WHITE);
+        jcbStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pendente", "Ativo", "Concluído" }));
+        jcbStatus.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1)));
+        jcbStatus.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jcbStatus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jcbStatusActionPerformed(evt);
+            }
+        });
+
+        jbtBack.setBackground(new java.awt.Color(250, 250, 250));
+        jbtBack.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/Back.png"))); // NOI18N
+        jbtBack.setBorder(null);
+        jbtBack.setContentAreaFilled(false);
+        jbtBack.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jbtBack.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jbtBackmouseBackEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jbtBackmouseBackExited(evt);
+            }
+        });
+        jbtBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtBackActionPerformed(evt);
             }
         });
 
@@ -96,30 +191,80 @@ public class CadastrarAtividade extends javax.swing.JFrame {
         PanelBorderWithRadius.setLayout(PanelBorderWithRadiusLayout);
         PanelBorderWithRadiusLayout.setHorizontalGroup(
             PanelBorderWithRadiusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelBorderTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, 760, Short.MAX_VALUE)
+            .addComponent(panelBorderTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, 763, Short.MAX_VALUE)
             .addGroup(PanelBorderWithRadiusLayout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addComponent(jlNome)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 533, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(34, Short.MAX_VALUE))
+                .addContainerGap()
+                .addGroup(PanelBorderWithRadiusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelBorderWithRadiusLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(PanelBorderWithRadiusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelBorderWithRadiusLayout.createSequentialGroup()
+                                .addGroup(PanelBorderWithRadiusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jtfNomeAtiv, javax.swing.GroupLayout.PREFERRED_SIZE, 526, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(PanelBorderWithRadiusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, PanelBorderWithRadiusLayout.createSequentialGroup()
+                                            .addComponent(jlDificuldade)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addComponent(jcbDificuldade, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGap(103, 103, 103)
+                                            .addComponent(jlStatus)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                            .addComponent(jcbStatus, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 524, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(112, 112, 112))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelBorderWithRadiusLayout.createSequentialGroup()
+                                .addComponent(jlNome)
+                                .addGap(281, 281, 281))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelBorderWithRadiusLayout.createSequentialGroup()
+                                .addComponent(jlObjetivo)
+                                .addGap(266, 266, 266))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelBorderWithRadiusLayout.createSequentialGroup()
+                                .addComponent(jtfPrazo, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(324, 324, 324))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelBorderWithRadiusLayout.createSequentialGroup()
+                                .addComponent(buttonPersonalizadoCriar, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(273, 273, 273))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelBorderWithRadiusLayout.createSequentialGroup()
+                                .addComponent(jlPrazo)
+                                .addGap(310, 310, 310))))
+                    .addGroup(PanelBorderWithRadiusLayout.createSequentialGroup()
+                        .addComponent(jbtBack)
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         PanelBorderWithRadiusLayout.setVerticalGroup(
             PanelBorderWithRadiusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PanelBorderWithRadiusLayout.createSequentialGroup()
                 .addComponent(panelBorderTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(36, 36, 36)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jbtBack)
+                .addGap(8, 8, 8)
+                .addComponent(jlNome)
+                .addGap(18, 18, 18)
+                .addComponent(jtfNomeAtiv, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jlObjetivo)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(24, 24, 24)
                 .addGroup(PanelBorderWithRadiusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jlNome)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 512, Short.MAX_VALUE))
+                    .addComponent(jlDificuldade)
+                    .addComponent(jcbDificuldade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jlStatus)
+                    .addComponent(jcbStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jlPrazo)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jtfPrazo, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(26, 26, 26)
+                .addComponent(buttonPersonalizadoCriar, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 34, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(PanelBorderWithRadius, javax.swing.GroupLayout.DEFAULT_SIZE, 760, Short.MAX_VALUE)
+            .addComponent(PanelBorderWithRadius, javax.swing.GroupLayout.DEFAULT_SIZE, 763, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -127,11 +272,72 @@ public class CadastrarAtividade extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void jtfNomeAtivActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfNomeAtivActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_jtfNomeAtivActionPerformed
+
+    private void jtfPrazoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfPrazoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jtfPrazoActionPerformed
+
+    private void jcbStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbStatusActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jcbStatusActionPerformed
+
+    private void jbtBackmouseBackEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbtBackmouseBackEntered
+        // TODO add your handling code here:
+        jbtBack.setIcon(new ImageIcon(getClass().getResource("/Icon/BackHover.png")));
+    }//GEN-LAST:event_jbtBackmouseBackEntered
+
+    private void jbtBackmouseBackExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbtBackmouseBackExited
+        // TODO add your handling code here:
+        jbtBack.setIcon(new ImageIcon(getClass().getResource("/Icon/Back.png")));
+    }//GEN-LAST:event_jbtBackmouseBackExited
+
+    private void jbtBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtBackActionPerformed
+        // TODO add your handling code here:
+        Principal telaPrincipal = new Principal(usuarioLogado);
+        this.dispose();
+        telaPrincipal.setVisible(true);
+    }//GEN-LAST:event_jbtBackActionPerformed
+
+    private void buttonPersonalizadoCriarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonPersonalizadoCriarActionPerformed
+        // TODO add your handling code here:
+        if (!jtfNomeAtiv.getText().isEmpty() && jtfNomeAtiv.getText() != null) {
+            if (!jtaObjetivo.getText().isEmpty() && jtaObjetivo.getText() != null) {
+                try {
+                    int prazo = Integer.parseInt(jtfPrazo.getText());
+                    if (prazo > 0) {         
+                            Object selecionadoAtualDificuldade = jcbDificuldade.getSelectedItem();
+                            String stringDificuldade = (String) selecionadoAtualDificuldade;
+                            Object selecionadoAtualStatus = jcbStatus.getSelectedItem();
+                            String stringStatus = (String) selecionadoAtualStatus;
+                            StatusType status = StatusType.valueOf(stringStatus);
+                            Atividade atividade = new Atividade(usuarioLogado.getCodigo(), prazo, jtfNomeAtiv.getText(), jtaObjetivo.getText(), stringDificuldade, status);
+                            atividadeDAO.cadastrarAtividade(atividade);
+
+                            
+                            jtfNomeAtiv.setText("");
+                            jtaObjetivo.setText("");
+                            jtfPrazo.setText("");
+                            jcbDificuldade.setSelectedIndex(0);
+                            jcbStatus.setSelectedIndex(0);
+                    } else {
+                        aviso.MensagemErro("Prazo é menor ou igual a 0!");
+                    }
+                } catch (NumberFormatException e) {
+                    aviso.MensagemErro("O valor do prazo não é um número válido!");
+                }
+            } else {
+                aviso.MensagemErro("Objetivo está vazio!");
+            }
+        } else {
+            aviso.MensagemErro("Nome da Atividade está vazio!");
+        }
+    }//GEN-LAST:event_buttonPersonalizadoCriarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -139,10 +345,21 @@ public class CadastrarAtividade extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private Components.PanelBorder PanelBorderWithRadius;
-    private javax.swing.JTextField jTextField1;
+    private Components.ButtonPersonalizado buttonPersonalizadoCriar;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton jbtBack;
+    private javax.swing.JComboBox<String> jcbDificuldade;
+    private javax.swing.JComboBox<String> jcbStatus;
+    private javax.swing.JLabel jlDificuldade;
     private javax.swing.JLabel jlNome;
+    private javax.swing.JLabel jlObjetivo;
+    private javax.swing.JLabel jlPrazo;
+    private javax.swing.JLabel jlStatus;
     private javax.swing.JLabel jlTitulo;
     private javax.swing.JPanel jpBordaReta;
+    private javax.swing.JTextArea jtaObjetivo;
+    private javax.swing.JTextField jtfNomeAtiv;
+    private javax.swing.JTextField jtfPrazo;
     private Components.PanelBorder panelBorderTitulo;
     // End of variables declaration//GEN-END:variables
 }

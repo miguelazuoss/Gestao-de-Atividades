@@ -28,7 +28,11 @@ public class TableHeaderPersonalizado extends JLabel {
     @Override
     protected void paintComponent(Graphics grphcs) {
         super.paintComponent(grphcs);
-        grphcs.setColor(new Color(230, 230, 230));
+        grphcs.setColor(new Color(200, 200, 200));
         grphcs.drawLine(0, getHeight() - 1, getWidth(), getHeight() - 1);
-    }
+          grphcs.setColor(new Color(200, 200, 200)); // Cor das linhas verticais
+        grphcs.drawLine(0, 0, 0, getHeight()); // Linha na borda esquerda
+        grphcs.drawLine(getWidth() - 1, 0, getWidth() - 1, getHeight()); // Linha na borda direita
+        
+        }
 }

@@ -4,25 +4,31 @@
  */
 package Telas;
 
+import DAO.AtividadeDAO;
+import Models.Atividade;
 import Models.Usuario;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import javax.swing.JScrollBar;
-import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author miguel_a_andrade
  */
 public class Principal extends javax.swing.JFrame {
+
     /**
      * Creates new form Principal
      */
-    
+
     Usuario usuarioLogado;
+    AtividadeDAO atividadeDAO = new AtividadeDAO();
+    int contadorPendente = 0, contadorAtivo = 0, contadorConcluido = 0;
     public Principal(Usuario usuario) {
+        usuarioLogado = usuario;
         initComponents();
         cardButtonPendentes.setTemp1(cardButtonPendentes.getGradientStartColor());
         cardButtonPendentes.setTemp2(cardButtonPendentes.getGradientFinalColor());
@@ -32,8 +38,8 @@ public class Principal extends javax.swing.JFrame {
         cardButtonConcluida.setTemp2(cardButtonConcluida.getGradientFinalColor());
         setBackground(new Color(0, 0, 0, 0));
         panelBorderWithRadius.initMoving(this);
-        usuarioLogado = usuario;
-        jlBemVindo.setText("Bem vindo "+usuario.getUser()+"!");
+        jlBemVindo.setText("Bem vindo " + usuario.getUser() + "!");
+        getAtividades();
     }
 
     /**
@@ -47,7 +53,6 @@ public class Principal extends javax.swing.JFrame {
 
         jTextField1 = new javax.swing.JTextField();
         panelBorderWithRadius = new Components.PanelBorder();
-        menuPrincipal = new Components.MenuPrincipal(this, usuarioLogado);
         jbtExit = new javax.swing.JButton();
         jbtMinimize = new javax.swing.JButton();
         cardButtonPendentes = new Components.CardButton();
@@ -63,6 +68,7 @@ public class Principal extends javax.swing.JFrame {
         jbtSearch = new javax.swing.JButton();
         jspTable = new javax.swing.JScrollPane();
         tablePersonalizadoAtividades = new Components.TablePersonalizado();
+        menuPrincipal1 = new Components.MenuPrincipal(this, usuarioLogado);
 
         jTextField1.setText("jTextField1");
 
@@ -128,6 +134,7 @@ public class Principal extends javax.swing.JFrame {
         cardButtonAndamento.setRadius(15);
         cardButtonAndamento.setValorTituloCard1("Atividades em andamento");
 
+        cardButtonConcluida.setBackground(new java.awt.Color(250, 250, 250));
         cardButtonConcluida.setColorClick(new java.awt.Color(51, 255, 153));
         cardButtonConcluida.setGradient(true);
         cardButtonConcluida.setGradientFinalColor(new java.awt.Color(17, 153, 142));
@@ -246,6 +253,7 @@ public class Principal extends javax.swing.JFrame {
         jspTable.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         jspTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
+        tablePersonalizadoAtividades.setBackground(new java.awt.Color(235, 235, 235));
         tablePersonalizadoAtividades.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -278,6 +286,7 @@ public class Principal extends javax.swing.JFrame {
             tablePersonalizadoAtividades.getColumnModel().getColumn(6).setMinWidth(80);
             tablePersonalizadoAtividades.getColumnModel().getColumn(6).setPreferredWidth(80);
             tablePersonalizadoAtividades.getColumnModel().getColumn(6).setMaxWidth(80);
+            tablePersonalizadoAtividades.getColumnModel().getColumn(7).setMinWidth(110);
             tablePersonalizadoAtividades.getColumnModel().getColumn(7).setPreferredWidth(110);
         }
 
@@ -286,55 +295,53 @@ public class Principal extends javax.swing.JFrame {
         panelBorderWithRadiusLayout.setHorizontalGroup(
             panelBorderWithRadiusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelBorderWithRadiusLayout.createSequentialGroup()
-                .addComponent(menuPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(menuPrincipal1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(panelBorderWithRadiusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelBorderWithRadiusLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jlBemVindo, javax.swing.GroupLayout.PREFERRED_SIZE, 837, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(4, 4, 4)
+                        .addComponent(jbtAccount, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jbtMinimize, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, 0)
+                        .addComponent(jbtExit, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panelBorderWithRadiusLayout.createSequentialGroup()
+                        .addGroup(panelBorderWithRadiusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(panelBorderWithRadiusLayout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(buttonPersonalizadoOrdDif, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(buttonPersonalizadoOrdPrazo, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(buttonPersonalizadoLimpar, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelBorderWithRadiusLayout.createSequentialGroup()
+                                .addGap(46, 46, 46)
+                                .addComponent(cardButtonPendentes, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(44, 44, 44)
+                                .addComponent(cardButtonAndamento, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(cardButtonConcluida, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(23, 23, 23)))
+                        .addGap(18, 18, 18))
                     .addGroup(panelBorderWithRadiusLayout.createSequentialGroup()
                         .addGroup(panelBorderWithRadiusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(panelBorderWithRadiusLayout.createSequentialGroup()
-                                .addGap(75, 75, 75)
-                                .addGroup(panelBorderWithRadiusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(panelBorderWithRadiusLayout.createSequentialGroup()
-                                        .addComponent(buttonPersonalizadoOrdDif, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(buttonPersonalizadoOrdPrazo, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(buttonPersonalizadoLimpar, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(panelBorderWithRadiusLayout.createSequentialGroup()
-                                        .addComponent(cardButtonPendentes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(41, 41, 41)
-                                        .addComponent(cardButtonAndamento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(41, 41, 41)
-                                        .addComponent(cardButtonConcluida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(44, 44, 44))))
+                                .addGap(20, 20, 20)
+                                .addComponent(jspTable, javax.swing.GroupLayout.PREFERRED_SIZE, 1004, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(panelBorderWithRadiusLayout.createSequentialGroup()
                                 .addGap(18, 18, 18)
                                 .addComponent(jcbFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jtfSearchBar, javax.swing.GroupLayout.PREFERRED_SIZE, 889, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jbtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelBorderWithRadiusLayout.createSequentialGroup()
-                        .addGap(27, 27, 27)
-                        .addGroup(panelBorderWithRadiusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelBorderWithRadiusLayout.createSequentialGroup()
-                                .addComponent(jlBemVindo, javax.swing.GroupLayout.PREFERRED_SIZE, 837, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(4, 4, 4)
-                                .addComponent(jbtAccount, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jtfSearchBar, javax.swing.GroupLayout.PREFERRED_SIZE, 909, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jbtMinimize, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, 0)
-                                .addComponent(jbtExit, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(5, 5, 5))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelBorderWithRadiusLayout.createSequentialGroup()
-                                .addComponent(jspTable, javax.swing.GroupLayout.PREFERRED_SIZE, 993, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(22, 22, 22))))))
+                                .addComponent(jbtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 18, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         panelBorderWithRadiusLayout.setVerticalGroup(
             panelBorderWithRadiusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(menuPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(panelBorderWithRadiusLayout.createSequentialGroup()
-                .addGap(2, 2, 2)
                 .addGroup(panelBorderWithRadiusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jbtMinimize, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(panelBorderWithRadiusLayout.createSequentialGroup()
@@ -344,103 +351,68 @@ public class Principal extends javax.swing.JFrame {
                     .addGroup(panelBorderWithRadiusLayout.createSequentialGroup()
                         .addGap(6, 6, 6)
                         .addComponent(jlBemVindo)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addGroup(panelBorderWithRadiusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(cardButtonPendentes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelBorderWithRadiusLayout.createSequentialGroup()
+                        .addGap(2, 2, 2)
+                        .addComponent(cardButtonConcluida, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(cardButtonAndamento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cardButtonConcluida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(20, 20, 20)
+                    .addComponent(cardButtonPendentes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
                 .addGroup(panelBorderWithRadiusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jbtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(panelBorderWithRadiusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jtfSearchBar, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jcbFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addGroup(panelBorderWithRadiusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(buttonPersonalizadoLimpar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(buttonPersonalizadoOrdPrazo, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(buttonPersonalizadoOrdDif, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
-                .addComponent(jspTable, javax.swing.GroupLayout.PREFERRED_SIZE, 379, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(17, 17, 17))
+                .addGap(18, 18, 18)
+                .addComponent(jspTable, javax.swing.GroupLayout.PREFERRED_SIZE, 385, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(13, 13, 13))
+            .addComponent(menuPrincipal1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelBorderWithRadius, javax.swing.GroupLayout.PREFERRED_SIZE, 1299, Short.MAX_VALUE)
+            .addComponent(panelBorderWithRadius, javax.swing.GroupLayout.PREFERRED_SIZE, 1338, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(panelBorderWithRadius, javax.swing.GroupLayout.DEFAULT_SIZE, 723, Short.MAX_VALUE)
-                .addGap(0, 0, 0))
+            .addComponent(panelBorderWithRadius, javax.swing.GroupLayout.PREFERRED_SIZE, 742, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jbtExitmouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbtExitmouseEntered
+    private void jbtSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtSearchActionPerformed
         // TODO add your handling code here:
-        jbtExit.setIcon(new ImageIcon(getClass().getResource("/Icon/IconCloseHover.png")));
-    }//GEN-LAST:event_jbtExitmouseEntered
+    }//GEN-LAST:event_jbtSearchActionPerformed
 
-    private void jbtExitmouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbtExitmouseExited
+    private void jbtSearchMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbtSearchMouseReleased
         // TODO add your handling code here:
-        jbtExit.setIcon(new ImageIcon(getClass().getResource("/Icon/IconClose.png")));
-    }//GEN-LAST:event_jbtExitmouseExited
+        jbtSearch.setIcon(new ImageIcon(getClass().getResource("/Icon/Search.png")));
+    }//GEN-LAST:event_jbtSearchMouseReleased
 
-    private void jbtExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtExitActionPerformed
+    private void jbtSearchMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbtSearchMousePressed
         // TODO add your handling code here:
-        System.exit(0);
-    }//GEN-LAST:event_jbtExitActionPerformed
+        jbtSearch.setIcon(new ImageIcon(getClass().getResource("/Icon/SearchClick.png")));
+    }//GEN-LAST:event_jbtSearchMousePressed
 
-    private void jbtMinimizemouseMinimizeEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbtMinimizemouseMinimizeEntered
+    private void jbtSearchMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbtSearchMouseExited
         // TODO add your handling code here:
-        jbtMinimize.setIcon(new ImageIcon(getClass().getResource("/Icon/MinimizeHover.png")));
-    }//GEN-LAST:event_jbtMinimizemouseMinimizeEntered
+        jbtSearch.setIcon(new ImageIcon(getClass().getResource("/Icon/Search.png")));
+    }//GEN-LAST:event_jbtSearchMouseExited
 
-    private void jbtMinimizemouseMinimizeExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbtMinimizemouseMinimizeExited
+    private void jbtSearchMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbtSearchMouseEntered
         // TODO add your handling code here:
-        jbtMinimize.setIcon(new ImageIcon(getClass().getResource("/Icon/Minimize.png")));
-    }//GEN-LAST:event_jbtMinimizemouseMinimizeExited
-
-    private void jbtMinimizeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtMinimizeActionPerformed
-        // TODO add your handling code here:
-        this.setState(JFrame.ICONIFIED);
-    }//GEN-LAST:event_jbtMinimizeActionPerformed
-
-    private void jbtAccountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtAccountActionPerformed
-        // TODO add your handling code here:
-        Login telaLogin = new Login();
-        this.dispose();
-        telaLogin.setVisible(true);
-    }//GEN-LAST:event_jbtAccountActionPerformed
-
-    private void mouseAccountEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mouseAccountEntered
-        // TODO add your handling code here:
-        jbtAccount.setIcon(new ImageIcon(getClass().getResource("/Icon/AccountHover.png")));
-        Color corAzulHover = new Color(89,133,225);
-        jlBemVindo.setText("Deslogar da conta: ("+usuarioLogado.getUser()+")?");
-        jlBemVindo.setForeground(corAzulHover);
-    }//GEN-LAST:event_mouseAccountEntered
-
-    private void mouseAccountExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mouseAccountExited
-        // TODO add your handling code here:
-        jbtAccount.setIcon(new ImageIcon(getClass().getResource("/Icon/Account.png")));
-        jlBemVindo.setText("Bem vindo "+ usuarioLogado.getUser()+"!");
-        jlBemVindo.setForeground(Color.BLACK);
-    }//GEN-LAST:event_mouseAccountExited
-
-    private void buttonPersonalizadoOrdDifActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonPersonalizadoOrdDifActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_buttonPersonalizadoOrdDifActionPerformed
-
-    private void buttonPersonalizadoLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonPersonalizadoLimparActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_buttonPersonalizadoLimparActionPerformed
+        jbtSearch.setIcon(new ImageIcon(getClass().getResource("/Icon/SearchHover.png")));
+    }//GEN-LAST:event_jbtSearchMouseEntered
 
     private void jcbFiltroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbFiltroActionPerformed
         // TODO add your handling code here:
@@ -450,31 +422,99 @@ public class Principal extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jtfSearchBarActionPerformed
 
-    private void jbtSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtSearchActionPerformed
+    private void buttonPersonalizadoOrdDifActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonPersonalizadoOrdDifActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jbtSearchActionPerformed
+    }//GEN-LAST:event_buttonPersonalizadoOrdDifActionPerformed
 
-    private void jbtSearchMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbtSearchMouseEntered
+    private void buttonPersonalizadoLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonPersonalizadoLimparActionPerformed
         // TODO add your handling code here:
-        jbtSearch.setIcon(new ImageIcon(getClass().getResource("/Icon/SearchHover.png")));
-    }//GEN-LAST:event_jbtSearchMouseEntered
+    }//GEN-LAST:event_buttonPersonalizadoLimparActionPerformed
 
-    private void jbtSearchMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbtSearchMouseExited
+    private void jbtAccountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtAccountActionPerformed
         // TODO add your handling code here:
-        jbtSearch.setIcon(new ImageIcon(getClass().getResource("/Icon/Search.png")));
-    }//GEN-LAST:event_jbtSearchMouseExited
+        Login telaLogin = new Login();
+        this.dispose();
+        telaLogin.setVisible(true);
+    }//GEN-LAST:event_jbtAccountActionPerformed
 
-    private void jbtSearchMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbtSearchMousePressed
+    private void mouseAccountExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mouseAccountExited
         // TODO add your handling code here:
-        jbtSearch.setIcon(new ImageIcon(getClass().getResource("/Icon/SearchClick.png")));
-    }//GEN-LAST:event_jbtSearchMousePressed
+        jbtAccount.setIcon(new ImageIcon(getClass().getResource("/Icon/Account.png")));
+        jlBemVindo.setText("Bem vindo " + usuarioLogado.getUser() + "!");
+        jlBemVindo.setForeground(Color.BLACK);
+    }//GEN-LAST:event_mouseAccountExited
 
-    private void jbtSearchMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbtSearchMouseReleased
+    private void mouseAccountEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mouseAccountEntered
         // TODO add your handling code here:
-        jbtSearch.setIcon(new ImageIcon(getClass().getResource("/Icon/Search.png")));
-    }//GEN-LAST:event_jbtSearchMouseReleased
+        jbtAccount.setIcon(new ImageIcon(getClass().getResource("/Icon/AccountHover.png")));
+        Color corAzulHover = new Color(89, 133, 225);
+        jlBemVindo.setText("Deslogar da conta: (" + usuarioLogado.getUser() + ")?");
+        jlBemVindo.setForeground(corAzulHover);
+    }//GEN-LAST:event_mouseAccountEntered
 
-    
+    private void jbtMinimizeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtMinimizeActionPerformed
+        // TODO add your handling code here:
+        this.setState(JFrame.ICONIFIED);
+    }//GEN-LAST:event_jbtMinimizeActionPerformed
+
+    private void jbtMinimizemouseMinimizeExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbtMinimizemouseMinimizeExited
+        // TODO add your handling code here:
+        jbtMinimize.setIcon(new ImageIcon(getClass().getResource("/Icon/Minimize.png")));
+    }//GEN-LAST:event_jbtMinimizemouseMinimizeExited
+
+    private void jbtMinimizemouseMinimizeEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbtMinimizemouseMinimizeEntered
+        // TODO add your handling code here:
+        jbtMinimize.setIcon(new ImageIcon(getClass().getResource("/Icon/MinimizeHover.png")));
+    }//GEN-LAST:event_jbtMinimizemouseMinimizeEntered
+
+    private void jbtExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtExitActionPerformed
+        // TODO add your handling code here:
+        System.exit(0);
+    }//GEN-LAST:event_jbtExitActionPerformed
+
+    private void jbtExitmouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbtExitmouseExited
+        // TODO add your handling code here:
+        jbtExit.setIcon(new ImageIcon(getClass().getResource("/Icon/IconClose.png")));
+    }//GEN-LAST:event_jbtExitmouseExited
+
+    private void jbtExitmouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbtExitmouseEntered
+        // TODO add your handling code here:
+        jbtExit.setIcon(new ImageIcon(getClass().getResource("/Icon/IconCloseHover.png")));
+    }//GEN-LAST:event_jbtExitmouseEntered
+
+    public void getAtividades() {
+        DefaultTableModel model = (DefaultTableModel) tablePersonalizadoAtividades.getModel();
+        model.setRowCount(0);
+
+        ArrayList<Atividade> listaAtividade = new ArrayList<>();
+        listaAtividade = atividadeDAO.getAtividades();
+
+        for (Atividade atividadeE : listaAtividade) {
+            Object[] linha = {
+                atividadeE.getCodigo(),
+                atividadeE.getNome(),
+                atividadeE.getAndamento(),
+                atividadeE.getDificuldade(),
+                atividadeE.getData_criacao(),
+                atividadeE.getData_finalizacao(),
+                atividadeE.getPrazo(),
+                atividadeE.getStatus()
+            };
+            model.addRow(linha);
+            if (atividadeE.getStatus().toString().equals("Pendente")) {
+                contadorPendente += 1;
+            }
+            if (atividadeE.getStatus().toString().equals("Ativo")) {
+                contadorAtivo +=1;
+            }
+            if (atividadeE.getStatus().toString().equals("Concluido")) {
+                contadorConcluido +=1;
+            }
+        }
+        cardButtonPendentes.setValorTituloCard2(String.valueOf(contadorPendente));
+        cardButtonAndamento.setValorTituloCard2(String.valueOf(contadorAtivo));
+        cardButtonConcluida.setValorTituloCard2(String.valueOf(contadorConcluido));
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private Components.ButtonPersonalizado buttonPersonalizadoLimpar;
@@ -492,7 +532,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JLabel jlBemVindo;
     private javax.swing.JScrollPane jspTable;
     private javax.swing.JTextField jtfSearchBar;
-    private Components.MenuPrincipal menuPrincipal;
+    private Components.MenuPrincipal menuPrincipal1;
     private Components.PanelBorder panelBorderWithRadius;
     private Components.TablePersonalizado tablePersonalizadoAtividades;
     // End of variables declaration//GEN-END:variables
