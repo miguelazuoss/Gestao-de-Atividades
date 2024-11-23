@@ -4,9 +4,11 @@
  */
 package Components;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import javax.swing.JLabel;
 import javax.swing.border.EmptyBorder;
 
@@ -31,8 +33,9 @@ public class TableHeaderPersonalizado extends JLabel {
         grphcs.setColor(new Color(200, 200, 200));
         grphcs.drawLine(0, getHeight() - 1, getWidth(), getHeight() - 1);
           grphcs.setColor(new Color(200, 200, 200)); // Cor das linhas verticais
-        grphcs.drawLine(0, 0, 0, getHeight()); // Linha na borda esquerda
-        grphcs.drawLine(getWidth() - 1, 0, getWidth() - 1, getHeight()); // Linha na borda direita
+          Graphics2D g2d = (Graphics2D) grphcs;
+          g2d.setStroke(new BasicStroke(0.5f)); // Espessura abaixo de 1 pixel
+          g2d.drawLine(0, 0, 0, getHeight());
         
         }
 }

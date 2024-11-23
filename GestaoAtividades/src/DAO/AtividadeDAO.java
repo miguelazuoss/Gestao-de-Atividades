@@ -46,10 +46,11 @@ public class AtividadeDAO {
     }
 
     // Achar todos os carros!!!    
-    public ArrayList<Atividade> getAtividades() {
-        String sql = "select * from atividade";
+    public ArrayList<Atividade> getAtividades(Integer usuarioCodigo) {
+        String sql = "select * from atividade where usuario_codigo=?";
         ArrayList<Atividade> atividades = new ArrayList<>();
         try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, usuarioCodigo);
             ResultSet rs = ps.executeQuery(); 
            
             while (rs.next()) {

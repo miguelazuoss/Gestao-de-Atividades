@@ -9,6 +9,9 @@ import Models.Atividade;
 import Models.Usuario;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -286,8 +289,9 @@ public class Principal extends javax.swing.JFrame {
             tablePersonalizadoAtividades.getColumnModel().getColumn(6).setMinWidth(80);
             tablePersonalizadoAtividades.getColumnModel().getColumn(6).setPreferredWidth(80);
             tablePersonalizadoAtividades.getColumnModel().getColumn(6).setMaxWidth(80);
-            tablePersonalizadoAtividades.getColumnModel().getColumn(7).setMinWidth(110);
-            tablePersonalizadoAtividades.getColumnModel().getColumn(7).setPreferredWidth(110);
+            tablePersonalizadoAtividades.getColumnModel().getColumn(7).setMinWidth(130);
+            tablePersonalizadoAtividades.getColumnModel().getColumn(7).setPreferredWidth(130);
+            tablePersonalizadoAtividades.getColumnModel().getColumn(7).setMaxWidth(130);
         }
 
         javax.swing.GroupLayout panelBorderWithRadiusLayout = new javax.swing.GroupLayout(panelBorderWithRadius);
@@ -487,17 +491,25 @@ public class Principal extends javax.swing.JFrame {
         model.setRowCount(0);
 
         ArrayList<Atividade> listaAtividade = new ArrayList<>();
-        listaAtividade = atividadeDAO.getAtividades();
+        listaAtividade = atividadeDAO.getAtividades(usuarioLogado.getCodigo());
 
         for (Atividade atividadeE : listaAtividade) {
+            LocalDate dataFinal = atividadeE.getData_criacao().plusDays(atividadeE.getPrazo());
+            LocalDate dataAgora = LocalDate.now();
+            DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            String dataFormatada = atividadeE.getData_criacao().format(formato);
+            long dias = ChronoUnit.DAYS.between(dataAgora, dataFinal);
+            if(dias <0){
+              dias = 0;
+            }
             Object[] linha = {
                 atividadeE.getCodigo(),
                 atividadeE.getNome(),
                 atividadeE.getAndamento(),
                 atividadeE.getDificuldade(),
-                atividadeE.getData_criacao(),
+                dataFormatada,
                 atividadeE.getData_finalizacao(),
-                atividadeE.getPrazo(),
+                dias,
                 atividadeE.getStatus()
             };
             model.addRow(linha);
