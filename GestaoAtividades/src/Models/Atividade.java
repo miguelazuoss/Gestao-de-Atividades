@@ -31,15 +31,15 @@ public class Atividade {
         this.data_finalizacao = data_finalizacao;
     }
 
-    public Atividade(int usuario_codigo, int prazo, String nome, String obj, String andamento, String dificuldade, StatusType status, LocalDate data_criacao) {
+    public Atividade(int usuario_codigo, int prazo, String nome, String obj, String dificuldade, StatusType status, LocalDate data_finalizacao) {
         this.usuario_codigo = usuario_codigo;
         this.prazo = prazo;
         this.nome = nome;
         this.obj = obj;
         this.dificuldade = dificuldade;
         this.status = status;
-        this.data_criacao = data_criacao;
-        this.andamento = andamento;
+        this.data_criacao = this.data_criacao = LocalDate.now();
+        this.data_finalizacao = data_finalizacao;
     }
 
     public Atividade(int usuario_codigo, int prazo, String nome, String obj, String dificuldade, StatusType status) {

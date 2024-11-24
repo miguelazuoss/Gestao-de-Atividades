@@ -4,7 +4,10 @@
  */
 package Telas;
 
+import DAO.AtividadeDAO;
+import Models.Usuario;
 import java.awt.Color;
+import java.awt.Frame;
 import javax.swing.JDialog;
 
 /**
@@ -12,14 +15,28 @@ import javax.swing.JDialog;
  * @author user
  */
 public class Aviso extends JDialog { // extendendo um JDialog para representar um dialogo //
+
     /**
      * Creates new form Erro
      */
+    Usuario usuarioLogado;
+    Frame principal;
+
     public Aviso() {
         setModal(true); // setando como um modal, para não conseguir interagir até que o aviso seja encerrado //
         initComponents();
         setBackground(new Color(0, 0, 0, 0));
         panelBorderFundoErro.initMoving(this);
+    }
+
+    public Aviso(Frame telaPrincipal, Usuario usuario) {
+        setModal(true); // setando como um modal, para não conseguir interagir até que o aviso seja encerrado //
+        initComponents();
+        setBackground(new Color(0, 0, 0, 0));
+        panelBorderFundoErro.initMoving(this);
+        usuarioLogado = usuario;
+        principal = telaPrincipal;
+        MensagemExclusao("Digite o ID");
     }
 
     public void MensagemErro(String erro) {
@@ -28,9 +45,9 @@ public class Aviso extends JDialog { // extendendo um JDialog para representar u
         jpBorder.setBackground(Color.decode("#FF3333"));
         this.setVisible(true);
         this.setAlwaysOnTop(true);
-        
+
     }
-    
+
     public void MensagemSucesso(String sucesso) {
         jlTituloFalha.setText("Sucesso");
         jtfTextoAviso.setText(sucesso);
@@ -40,6 +57,31 @@ public class Aviso extends JDialog { // extendendo um JDialog para representar u
         buttonPersonalizadoSair.setColorClick(Color.GREEN);
         buttonPersonalizadoSair.setText("Ok");
         this.setVisible(true);
+        this.setAlwaysOnTop(true);
+    }
+
+    public void MensagemExclusao(String acao) {
+        jlTituloFalha.setText(acao);
+        jtfTextoAviso.setEnabled(true);
+        jtfTextoAviso.setEditable(true);
+        jtfTextoAviso.setBackground(Color.LIGHT_GRAY);
+        jpBorder.setBackground(Color.DARK_GRAY);
+        buttonPersonalizadoSair.setColor(Color.decode("#15d283"));
+        buttonPersonalizadoSair.setColorOver(Color.GREEN);
+        buttonPersonalizadoSair.setColorClick(Color.GREEN);
+        buttonPersonalizadoSair.setText("Confirmar");
+        this.setVisible(true);
+        this.setAlwaysOnTop(true);
+    }
+
+    private void processamentoExclusao(Integer id) {
+        try {
+            // Passa o ID para o DAO para excluir a atividade
+            AtividadeDAO atividadeDAO = new AtividadeDAO();
+            atividadeDAO.excluirAtividade(usuarioLogado.getCodigo(), id);
+        } catch (NumberFormatException e) {
+            MensagemErro("O ID inserido não é um número válido!");
+        }
     }
 
     /**
@@ -174,6 +216,21 @@ public class Aviso extends JDialog { // extendendo um JDialog para representar u
 
     private void buttonPersonalizadoSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonPersonalizadoSairActionPerformed
         // TODO add your handling code here:
+        if (jlTituloFalha.getText().equals("Digite o ID")) {
+            if (jtfTextoAviso.getText().equals("")) {
+                this.dispose();
+            }else {
+                try {
+                    int idExclusao = Integer.parseInt(jtfTextoAviso.getText());
+                    if (idExclusao > 0) { // Se o ID for válido, realiza a exclusão
+                        processamentoExclusao(idExclusao);
+                    }
+                } catch (NumberFormatException e) {
+                    Aviso avisoNovo = new Aviso();
+                    avisoNovo.MensagemErro("O ID inserido não é um número válido!");
+                }
+            }
+        }
         this.dispose();
     }//GEN-LAST:event_buttonPersonalizadoSairActionPerformed
 

@@ -47,7 +47,7 @@ public class TableStatusPersonalizado extends JLabel {
             } else if (type == StatusType.Ativo) {
                 g = new GradientPaint(0, 0, new Color(0, 180, 219), 0, getHeight(), new Color(0,131,176));
             } else {
-                g = new GradientPaint(0, 0, new Color(0, 242, 96), 0, getHeight(), new Color(5, 117, 230));
+                g = new GradientPaint(0, 0, new Color(0, 242, 96), 0, getHeight(), new Color(17,207,168));
             }
             g2.setPaint(g);
             g2.fillRoundRect(0, 0, getWidth(), getHeight(), 15, 15);

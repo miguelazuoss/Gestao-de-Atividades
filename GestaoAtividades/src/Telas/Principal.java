@@ -26,23 +26,18 @@ public class Principal extends javax.swing.JFrame {
     /**
      * Creates new form Principal
      */
-
     Usuario usuarioLogado;
     AtividadeDAO atividadeDAO = new AtividadeDAO();
-    int contadorPendente = 0, contadorAtivo = 0, contadorConcluido = 0;
+    String filtroCard = "";
+    String filtro = "";
+    String filtroSearch = "";
+    String stringFiltroCombo = "";
+
     public Principal(Usuario usuario) {
         usuarioLogado = usuario;
         initComponents();
-        cardButtonPendentes.setTemp1(cardButtonPendentes.getGradientStartColor());
-        cardButtonPendentes.setTemp2(cardButtonPendentes.getGradientFinalColor());
-        cardButtonAndamento.setTemp1(cardButtonAndamento.getGradientStartColor());
-        cardButtonAndamento.setTemp2(cardButtonAndamento.getGradientFinalColor());
-        cardButtonConcluida.setTemp1(cardButtonConcluida.getGradientStartColor());
-        cardButtonConcluida.setTemp2(cardButtonConcluida.getGradientFinalColor());
-        setBackground(new Color(0, 0, 0, 0));
-        panelBorderWithRadius.initMoving(this);
-        jlBemVindo.setText("Bem vindo " + usuario.getUser() + "!");
-        getAtividades();
+        carregarElementos();
+        atualizarLista();
     }
 
     /**
@@ -126,6 +121,11 @@ public class Principal extends javax.swing.JFrame {
         cardButtonPendentes.setGradientStartColor(new java.awt.Color(253, 200, 48));
         cardButtonPendentes.setGradientStartColorHover(new java.awt.Color(253, 170, 97));
         cardButtonPendentes.setRadius(15);
+        cardButtonPendentes.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                cardButtonPendentesMouseClicked(evt);
+            }
+        });
 
         cardButtonAndamento.setColor(new java.awt.Color(0, 143, 249));
         cardButtonAndamento.setColorClick(new java.awt.Color(102, 255, 255));
@@ -136,6 +136,11 @@ public class Principal extends javax.swing.JFrame {
         cardButtonAndamento.setGradientStartColorHover(new java.awt.Color(0, 215, 246));
         cardButtonAndamento.setRadius(15);
         cardButtonAndamento.setValorTituloCard1("Atividades em andamento");
+        cardButtonAndamento.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                cardButtonAndamentoMouseClicked(evt);
+            }
+        });
 
         cardButtonConcluida.setBackground(new java.awt.Color(250, 250, 250));
         cardButtonConcluida.setColorClick(new java.awt.Color(51, 255, 153));
@@ -146,6 +151,11 @@ public class Principal extends javax.swing.JFrame {
         cardButtonConcluida.setGradientStartColorHover(new java.awt.Color(56, 235, 189));
         cardButtonConcluida.setRadius(15);
         cardButtonConcluida.setValorTituloCard1("Atividades concluídas");
+        cardButtonConcluida.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                cardButtonConcluidaMouseClicked(evt);
+            }
+        });
 
         jlBemVindo.setFont(new java.awt.Font("Segoe UI", 1, 25)); // NOI18N
         jlBemVindo.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -193,6 +203,11 @@ public class Principal extends javax.swing.JFrame {
         buttonPersonalizadoOrdPrazo.setColorOver(new java.awt.Color(102, 102, 102));
         buttonPersonalizadoOrdPrazo.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         buttonPersonalizadoOrdPrazo.setRadius(15);
+        buttonPersonalizadoOrdPrazo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonPersonalizadoOrdPrazoActionPerformed(evt);
+            }
+        });
 
         buttonPersonalizadoOrdDif.setForeground(new java.awt.Color(255, 255, 255));
         buttonPersonalizadoOrdDif.setText("Ordenar por dificuldade");
@@ -394,8 +409,30 @@ public class Principal extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void carregarElementos() {
+        cardButtonPendentes.setTemp1(cardButtonPendentes.getGradientStartColor());
+        cardButtonPendentes.setTemp2(cardButtonPendentes.getGradientFinalColor());
+        cardButtonAndamento.setTemp1(cardButtonAndamento.getGradientStartColor());
+        cardButtonAndamento.setTemp2(cardButtonAndamento.getGradientFinalColor());
+        cardButtonConcluida.setTemp1(cardButtonConcluida.getGradientStartColor());
+        cardButtonConcluida.setTemp2(cardButtonConcluida.getGradientFinalColor());
+        setBackground(new Color(0, 0, 0, 0));
+        panelBorderWithRadius.initMoving(this);
+        jlBemVindo.setText("Bem vindo " + usuarioLogado.getUser() + "!");
+    }
+
+    public void atualizarLista() {
+        ArrayList<Atividade> listaAtividade = atividadeDAO.getAtividades(usuarioLogado.getCodigo(), filtro, filtroSearch, stringFiltroCombo);
+        getAtividades();
+        atualizarContadores(listaAtividade);
+    }
+
     private void jbtSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtSearchActionPerformed
         // TODO add your handling code here:
+        Object selecionadoAtualFiltro = jcbFiltro.getSelectedItem();
+        stringFiltroCombo = (String) selecionadoAtualFiltro;
+        filtroSearch = jtfSearchBar.getText();
+        getAtividades();
     }//GEN-LAST:event_jbtSearchActionPerformed
 
     private void jbtSearchMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbtSearchMouseReleased
@@ -428,10 +465,24 @@ public class Principal extends javax.swing.JFrame {
 
     private void buttonPersonalizadoOrdDifActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonPersonalizadoOrdDifActionPerformed
         // TODO add your handling code here:
+        if (filtro.equals("dificuldadeASC")) {
+            filtro = "dificuldadeDSC";
+        } else if (filtro.equals("dificuldadeDSC")) {
+            filtro = "dificuldadeASC";
+        } else {
+            filtro = "dificuldadeASC";
+        }
+        getAtividades();
     }//GEN-LAST:event_buttonPersonalizadoOrdDifActionPerformed
 
     private void buttonPersonalizadoLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonPersonalizadoLimparActionPerformed
         // TODO add your handling code here:
+        filtroCard = "";
+        filtro = "";
+        filtroSearch = "";
+        jtfSearchBar.setText("");
+        jcbFiltro.setSelectedIndex(0);
+        getAtividades();
     }//GEN-LAST:event_buttonPersonalizadoLimparActionPerformed
 
     private void jbtAccountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtAccountActionPerformed
@@ -486,41 +537,93 @@ public class Principal extends javax.swing.JFrame {
         jbtExit.setIcon(new ImageIcon(getClass().getResource("/Icon/IconCloseHover.png")));
     }//GEN-LAST:event_jbtExitmouseEntered
 
-    public void getAtividades() {
+    private void cardButtonPendentesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cardButtonPendentesMouseClicked
+        // TODO add your handling code here:
+        filtroCard = "Pendente";
+        getAtividades();
+    }//GEN-LAST:event_cardButtonPendentesMouseClicked
+
+    private void cardButtonAndamentoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cardButtonAndamentoMouseClicked
+        // TODO add your handling code here:
+        filtroCard = "Ativo";
+        getAtividades();
+    }//GEN-LAST:event_cardButtonAndamentoMouseClicked
+
+    private void cardButtonConcluidaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cardButtonConcluidaMouseClicked
+        // TODO add your handling code here:
+        filtroCard = "Concluido";
+        getAtividades();
+    }//GEN-LAST:event_cardButtonConcluidaMouseClicked
+
+    private void buttonPersonalizadoOrdPrazoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonPersonalizadoOrdPrazoActionPerformed
+        // TODO add your handling code here:
+        if (filtro.equals("prazoASC")) {
+            filtro = "prazoDSC";
+        } else if (filtro.equals("prazoDSC")) {
+            filtro = "prazoASC";
+        } else {
+            filtro = "prazoASC";
+        }
+        getAtividades();
+    }//GEN-LAST:event_buttonPersonalizadoOrdPrazoActionPerformed
+
+    private void getAtividades() {
         DefaultTableModel model = (DefaultTableModel) tablePersonalizadoAtividades.getModel();
         model.setRowCount(0);
 
-        ArrayList<Atividade> listaAtividade = new ArrayList<>();
-        listaAtividade = atividadeDAO.getAtividades(usuarioLogado.getCodigo());
+        ArrayList<Atividade> listaAtividade = atividadeDAO.getAtividades(usuarioLogado.getCodigo(), filtro, filtroSearch, stringFiltroCombo);
 
         for (Atividade atividadeE : listaAtividade) {
-            LocalDate dataFinal = atividadeE.getData_criacao().plusDays(atividadeE.getPrazo());
-            LocalDate dataAgora = LocalDate.now();
-            DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            String dataFormatada = atividadeE.getData_criacao().format(formato);
-            long dias = ChronoUnit.DAYS.between(dataAgora, dataFinal);
-            if(dias <0){
-              dias = 0;
+            String dataFormatadaFinal = formatarData(atividadeE.getData_finalizacao());
+            String dataFormatada = formatarData(atividadeE.getData_criacao());
+            long diasRestantes = calcularDiasPrazo(atividadeE);
+
+            boolean adicionarLinha = filtroCard == null || filtroCard.isEmpty()
+                    || atividadeE.getStatus().toString().equals(filtroCard);
+
+            if (adicionarLinha) {
+                adicionarAtividadeNaTabela(model, atividadeE, dataFormatada, dataFormatadaFinal, diasRestantes);
             }
-            Object[] linha = {
-                atividadeE.getCodigo(),
-                atividadeE.getNome(),
-                atividadeE.getAndamento(),
-                atividadeE.getDificuldade(),
-                dataFormatada,
-                atividadeE.getData_finalizacao(),
-                dias,
-                atividadeE.getStatus()
-            };
-            model.addRow(linha);
+        }
+
+    }
+
+    private String formatarData(LocalDate data) {
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        return (data != null) ? data.format(formato) : "";
+    }
+
+    private long calcularDiasPrazo(Atividade atividade) {
+        LocalDate dataFinal = atividade.getData_criacao().plusDays(atividade.getPrazo());
+        LocalDate dataAgora = LocalDate.now();
+        long dias = ChronoUnit.DAYS.between(dataAgora, dataFinal);
+        return Math.max(dias, 0); // Garante que o valor não seja negativo
+    }
+
+    private void adicionarAtividadeNaTabela(DefaultTableModel model, Atividade atividade, String dataFormatada, String dataFormatadaFinal, long diasRestantes) {
+        Object[] linha = {
+            atividade.getCodigo(),
+            atividade.getNome(),
+            atividade.getAndamento(),
+            atividade.getDificuldade(),
+            dataFormatada,
+            dataFormatadaFinal,
+            diasRestantes,
+            atividade.getStatus()
+        };
+        model.addRow(linha);
+    }
+
+    private void atualizarContadores(ArrayList<Atividade> listaAtividade) {
+        int contadorPendente = 0, contadorAtivo = 0, contadorConcluido = 0;
+        for (Atividade atividadeE : listaAtividade) {
+
             if (atividadeE.getStatus().toString().equals("Pendente")) {
                 contadorPendente += 1;
-            }
-            if (atividadeE.getStatus().toString().equals("Ativo")) {
-                contadorAtivo +=1;
-            }
-            if (atividadeE.getStatus().toString().equals("Concluido")) {
-                contadorConcluido +=1;
+            } else if (atividadeE.getStatus().toString().equals("Ativo")) {
+                contadorAtivo += 1;
+            } else {
+                contadorConcluido += 1;
             }
         }
         cardButtonPendentes.setValorTituloCard2(String.valueOf(contadorPendente));

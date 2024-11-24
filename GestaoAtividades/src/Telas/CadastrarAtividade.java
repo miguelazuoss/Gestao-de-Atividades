@@ -10,6 +10,7 @@ import Models.StatusType;
 import Models.Usuario;
 import java.awt.Color;
 import static java.lang.Double.isNaN;
+import java.time.LocalDate;
 import javax.swing.ImageIcon;
 
 /**
@@ -29,7 +30,8 @@ public class CadastrarAtividade extends javax.swing.JFrame {
         usuarioLogado = usuario;
         initComponents();
         setBackground(new Color(0, 0, 0, 0)); // Atribuindo o fundo para ser transparente ( para aparecer a borda arredondada )
-        PanelBorderWithRadius.initMoving(this); // Atribuindo o frame no metodo para o a movimentação da tela      
+        PanelBorderWithRadius.initMoving(this); // Atribuindo o frame no metodo para o a movimentação da tela
+        jtaObjetivo.setLineWrap(true);
     }
 
     /**
@@ -159,9 +161,14 @@ public class CadastrarAtividade extends javax.swing.JFrame {
         });
 
         jcbStatus.setBackground(Color.WHITE);
-        jcbStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pendente", "Ativo", "Concluído" }));
+        jcbStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pendente", "Ativo", "Concluido" }));
         jcbStatus.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1)));
         jcbStatus.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jcbStatus.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jcbStatusItemStateChanged(evt);
+            }
+        });
         jcbStatus.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jcbStatusActionPerformed(evt);
@@ -310,21 +317,26 @@ public class CadastrarAtividade extends javax.swing.JFrame {
             if (!jtaObjetivo.getText().isEmpty() && jtaObjetivo.getText() != null) {
                 try {
                     int prazo = Integer.parseInt(jtfPrazo.getText());
-                    if (prazo > 0) {         
-                            Object selecionadoAtualDificuldade = jcbDificuldade.getSelectedItem();
-                            String stringDificuldade = (String) selecionadoAtualDificuldade;
-                            Object selecionadoAtualStatus = jcbStatus.getSelectedItem();
-                            String stringStatus = (String) selecionadoAtualStatus;
-                            StatusType status = StatusType.valueOf(stringStatus);
+                    Object selecionadoAtualStatus = jcbStatus.getSelectedItem();
+                    String stringStatus = (String) selecionadoAtualStatus;
+                    if (prazo > 0 || stringStatus.equals("Concluido")) {
+                        Object selecionadoAtualDificuldade = jcbDificuldade.getSelectedItem();
+                        String stringDificuldade = (String) selecionadoAtualDificuldade;
+                        StatusType status = StatusType.valueOf(stringStatus);
+                        if (stringStatus.equals("Concluido")) {
+                            LocalDate dataFinalizacao = LocalDate.now();
+                            Atividade atividade = new Atividade(usuarioLogado.getCodigo(), prazo, jtfNomeAtiv.getText(), jtaObjetivo.getText(), stringDificuldade, status, dataFinalizacao);
+                            atividadeDAO.cadastrarAtividade(atividade);
+                        } else {
                             Atividade atividade = new Atividade(usuarioLogado.getCodigo(), prazo, jtfNomeAtiv.getText(), jtaObjetivo.getText(), stringDificuldade, status);
                             atividadeDAO.cadastrarAtividade(atividade);
+                        }
 
-                            
-                            jtfNomeAtiv.setText("");
-                            jtaObjetivo.setText("");
-                            jtfPrazo.setText("");
-                            jcbDificuldade.setSelectedIndex(0);
-                            jcbStatus.setSelectedIndex(0);
+                        jtfNomeAtiv.setText("");
+                        jtaObjetivo.setText("");
+                        jtfPrazo.setText("");
+                        jcbDificuldade.setSelectedIndex(0);
+                        jcbStatus.setSelectedIndex(0);
                     } else {
                         aviso.MensagemErro("Prazo é menor ou igual a 0!");
                     }
@@ -338,6 +350,20 @@ public class CadastrarAtividade extends javax.swing.JFrame {
             aviso.MensagemErro("Nome da Atividade está vazio!");
         }
     }//GEN-LAST:event_buttonPersonalizadoCriarActionPerformed
+
+    private void jcbStatusItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jcbStatusItemStateChanged
+        // TODO add your handling code here:
+
+        Object selecionadoAtualStatus = jcbStatus.getSelectedItem();
+        String stringStatus = (String) selecionadoAtualStatus;
+        if (stringStatus.equals("Concluido")) {
+            jtfPrazo.setText("0");
+            jtfPrazo.setEnabled(false);
+        } else {
+            jtfPrazo.setText("");
+            jtfPrazo.setEnabled(true);
+        }
+    }//GEN-LAST:event_jcbStatusItemStateChanged
 
     /**
      * @param args the command line arguments
