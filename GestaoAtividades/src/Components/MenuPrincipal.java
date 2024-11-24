@@ -192,6 +192,8 @@ public class MenuPrincipal extends javax.swing.JPanel {
 
     private void jbtRedefinirSenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtRedefinirSenhaActionPerformed
         // TODO add your handling code here:
+        Aviso aviso = new Aviso(principal, usuarioLogado, "Digite a senha");
+        principal.atualizarLista();
     }//GEN-LAST:event_jbtRedefinirSenhaActionPerformed
 
     private void jbtExcluirAtividadeMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbtExcluirAtividadeMouseEntered
@@ -207,7 +209,7 @@ public class MenuPrincipal extends javax.swing.JPanel {
 
     private void jbtExcluirAtividadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtExcluirAtividadeActionPerformed
         // TODO add your handling code here:
-        Aviso aviso = new Aviso(principal, usuarioLogado);
+        Aviso aviso = new Aviso(principal, usuarioLogado, "Digite o ID");
         principal.atualizarLista();
     }//GEN-LAST:event_jbtExcluirAtividadeActionPerformed
 

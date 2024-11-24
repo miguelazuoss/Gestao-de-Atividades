@@ -5,6 +5,7 @@
 package Telas;
 
 import DAO.AtividadeDAO;
+import DAO.UsuarioDAO;
 import Models.Usuario;
 import java.awt.Color;
 import java.awt.Frame;
@@ -27,16 +28,20 @@ public class Aviso extends JDialog { // extendendo um JDialog para representar u
         initComponents();
         setBackground(new Color(0, 0, 0, 0));
         panelBorderFundoErro.initMoving(this);
+        buttonPersonalizadoSairInvisible.setVisible(false);
+        buttonPersonalizadoSairInvisible.setEnabled(false);
     }
 
-    public Aviso(Frame telaPrincipal, Usuario usuario) {
+    public Aviso(Frame telaPrincipal, Usuario usuario,String acao) {
         setModal(true); // setando como um modal, para não conseguir interagir até que o aviso seja encerrado //
         initComponents();
         setBackground(new Color(0, 0, 0, 0));
         panelBorderFundoErro.initMoving(this);
         usuarioLogado = usuario;
         principal = telaPrincipal;
-        MensagemExclusao("Digite o ID");
+        MensagemAcao(acao);
+        buttonPersonalizadoSairInvisible.setVisible(true);
+        buttonPersonalizadoSairInvisible.setEnabled(true);
     }
 
     public void MensagemErro(String erro) {
@@ -60,7 +65,7 @@ public class Aviso extends JDialog { // extendendo um JDialog para representar u
         this.setAlwaysOnTop(true);
     }
 
-    public void MensagemExclusao(String acao) {
+    public void MensagemAcao(String acao) {
         jlTituloFalha.setText(acao);
         jtfTextoAviso.setEnabled(true);
         jtfTextoAviso.setEditable(true);
@@ -83,7 +88,16 @@ public class Aviso extends JDialog { // extendendo um JDialog para representar u
             MensagemErro("O ID inserido não é um número válido!");
         }
     }
-
+    
+    private void processamentoRedefinir() {
+        if(!jtfTextoAviso.getText().isEmpty()){
+            UsuarioDAO usuarioDAO = new UsuarioDAO();
+            usuarioDAO.alterarSenha(usuarioLogado.getEmail(), jtfTextoAviso.getText());
+        } else{
+            Aviso avisoNovo = new Aviso();
+            avisoNovo.MensagemErro("A senha está vazia, não foi possivel redefinir a senha!");
+        }
+        } 
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -99,6 +113,7 @@ public class Aviso extends JDialog { // extendendo um JDialog para representar u
         jpFundoTituloFalha = new javax.swing.JPanel();
         jlTituloFalha = new javax.swing.JLabel();
         jtfTextoAviso = new javax.swing.JTextField();
+        buttonPersonalizadoSairInvisible = new Components.ButtonPersonalizado();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setUndecorated(true);
@@ -133,10 +148,10 @@ public class Aviso extends JDialog { // extendendo um JDialog para representar u
         jpFundoTituloFalha.setLayout(jpFundoTituloFalhaLayout);
         jpFundoTituloFalhaLayout.setHorizontalGroup(
             jpFundoTituloFalhaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jpFundoTituloFalhaLayout.createSequentialGroup()
-                .addGap(129, 129, 129)
-                .addComponent(jlTituloFalha, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpFundoTituloFalhaLayout.createSequentialGroup()
+                .addGap(64, 64, 64)
+                .addComponent(jlTituloFalha, javax.swing.GroupLayout.PREFERRED_SIZE, 285, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(64, 64, 64))
         );
         jpFundoTituloFalhaLayout.setVerticalGroup(
             jpFundoTituloFalhaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -174,19 +189,36 @@ public class Aviso extends JDialog { // extendendo um JDialog para representar u
             }
         });
 
+        buttonPersonalizadoSairInvisible.setForeground(new java.awt.Color(255, 255, 255));
+        buttonPersonalizadoSairInvisible.setText("Sair");
+        buttonPersonalizadoSairInvisible.setBorderColor(new java.awt.Color(250, 250, 250));
+        buttonPersonalizadoSairInvisible.setBorderPainted(false);
+        buttonPersonalizadoSairInvisible.setColor(new java.awt.Color(255, 51, 51));
+        buttonPersonalizadoSairInvisible.setColorClick(new java.awt.Color(204, 0, 0));
+        buttonPersonalizadoSairInvisible.setColorOver(new java.awt.Color(255, 102, 102));
+        buttonPersonalizadoSairInvisible.setRadius(15);
+        buttonPersonalizadoSairInvisible.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonPersonalizadoSairInvisibleActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelBorderFundoErroLayout = new javax.swing.GroupLayout(panelBorderFundoErro);
         panelBorderFundoErro.setLayout(panelBorderFundoErroLayout);
         panelBorderFundoErroLayout.setHorizontalGroup(
             panelBorderFundoErroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelBorderFundoErroLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(buttonPersonalizadoSair, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(149, 149, 149))
             .addComponent(jpBorder, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(panelBorderFundoErroLayout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addComponent(jtfTextoAviso, javax.swing.GroupLayout.PREFERRED_SIZE, 351, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(29, Short.MAX_VALUE))
+                .addGap(31, 31, 31)
+                .addGroup(panelBorderFundoErroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelBorderFundoErroLayout.createSequentialGroup()
+                        .addComponent(buttonPersonalizadoSairInvisible, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(buttonPersonalizadoSair, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(155, 155, 155))
+                    .addGroup(panelBorderFundoErroLayout.createSequentialGroup()
+                        .addComponent(jtfTextoAviso, javax.swing.GroupLayout.PREFERRED_SIZE, 351, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         panelBorderFundoErroLayout.setVerticalGroup(
             panelBorderFundoErroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -195,7 +227,9 @@ public class Aviso extends JDialog { // extendendo um JDialog para representar u
                 .addGap(12, 12, 12)
                 .addComponent(jtfTextoAviso, javax.swing.GroupLayout.DEFAULT_SIZE, 42, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(buttonPersonalizadoSair, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(panelBorderFundoErroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(buttonPersonalizadoSair, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(buttonPersonalizadoSairInvisible, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(16, 16, 16))
         );
 
@@ -203,7 +237,7 @@ public class Aviso extends JDialog { // extendendo um JDialog para representar u
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelBorderFundoErro, javax.swing.GroupLayout.DEFAULT_SIZE, 412, Short.MAX_VALUE)
+            .addComponent(panelBorderFundoErro, javax.swing.GroupLayout.DEFAULT_SIZE, 415, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -230,6 +264,8 @@ public class Aviso extends JDialog { // extendendo um JDialog para representar u
                     avisoNovo.MensagemErro("O ID inserido não é um número válido!");
                 }
             }
+        } else if(jlTituloFalha.getText().equals("Digite a senha")){
+           processamentoRedefinir();
         }
         this.dispose();
     }//GEN-LAST:event_buttonPersonalizadoSairActionPerformed
@@ -238,6 +274,11 @@ public class Aviso extends JDialog { // extendendo um JDialog para representar u
         // TODO add your handling code here:
         jtfTextoAviso.setCaretPosition(0);
     }//GEN-LAST:event_focusTextGained
+
+    private void buttonPersonalizadoSairInvisibleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonPersonalizadoSairInvisibleActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_buttonPersonalizadoSairInvisibleActionPerformed
 
     /**
      * @param args the command line arguments
@@ -277,6 +318,7 @@ public class Aviso extends JDialog { // extendendo um JDialog para representar u
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private Components.ButtonPersonalizado buttonPersonalizadoSair;
+    private Components.ButtonPersonalizado buttonPersonalizadoSairInvisible;
     private javax.swing.JLabel jlTituloFalha;
     private javax.swing.JPanel jpBorder;
     private javax.swing.JPanel jpFundoTituloFalha;
