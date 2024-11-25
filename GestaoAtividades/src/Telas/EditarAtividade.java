@@ -9,7 +9,6 @@ import Models.Atividade;
 import Models.StatusType;
 import Models.Usuario;
 import java.awt.Color;
-import static java.lang.Double.isNaN;
 import java.time.LocalDate;
 import javax.swing.ImageIcon;
 
@@ -17,7 +16,8 @@ import javax.swing.ImageIcon;
  *
  * @author miguel_a_andrade
  */
-public class CadastrarAtividade extends javax.swing.JFrame {
+
+public class EditarAtividade extends javax.swing.JFrame {
 
     /**
      * Creates new form CadastrarAtividade
@@ -25,13 +25,16 @@ public class CadastrarAtividade extends javax.swing.JFrame {
     Aviso aviso = new Aviso();
     AtividadeDAO atividadeDAO = new AtividadeDAO();
     Usuario usuarioLogado;
-
-    public CadastrarAtividade(Usuario usuario) {
+    Atividade atividade;
+    public EditarAtividade(Usuario usuario, Integer id) {
         usuarioLogado = usuario;
         initComponents();
         setBackground(new Color(0, 0, 0, 0)); // Atribuindo o fundo para ser transparente ( para aparecer a borda arredondada )
         PanelBorderWithRadius.initMoving(this); // Atribuindo o frame no metodo para o a movimentação da tela
         jtaObjetivo.setLineWrap(true);
+        jtaAndamento.setLineWrap(true);
+        atividade = atividadeDAO.atividadePorID(usuarioLogado.getCodigo(), id);
+        atribuirValores(atividade);
     }
 
     /**
@@ -57,9 +60,12 @@ public class CadastrarAtividade extends javax.swing.JFrame {
         jlStatus = new javax.swing.JLabel();
         jlPrazo = new javax.swing.JLabel();
         jtfPrazo = new javax.swing.JTextField();
-        buttonPersonalizadoCriar = new Components.ButtonPersonalizado();
+        buttonPersonalizadoEditar = new Components.ButtonPersonalizado();
         jcbStatus = new javax.swing.JComboBox<>();
         jbtBack = new javax.swing.JButton();
+        jlAndamento = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jtaAndamento = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -84,7 +90,7 @@ public class CadastrarAtividade extends javax.swing.JFrame {
         jlTitulo.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         jlTitulo.setForeground(new java.awt.Color(255, 255, 255));
         jlTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jlTitulo.setText("Criação de Atividade ");
+        jlTitulo.setText("Detalhes da Atividade ");
 
         javax.swing.GroupLayout panelBorderTituloLayout = new javax.swing.GroupLayout(panelBorderTitulo);
         panelBorderTitulo.setLayout(panelBorderTituloLayout);
@@ -146,17 +152,17 @@ public class CadastrarAtividade extends javax.swing.JFrame {
             }
         });
 
-        buttonPersonalizadoCriar.setBackground(new java.awt.Color(20, 208, 130));
-        buttonPersonalizadoCriar.setForeground(new java.awt.Color(255, 255, 255));
-        buttonPersonalizadoCriar.setText("Criar Atividade");
-        buttonPersonalizadoCriar.setColor(new java.awt.Color(20, 208, 130));
-        buttonPersonalizadoCriar.setColorClick(new java.awt.Color(204, 255, 204));
-        buttonPersonalizadoCriar.setColorOver(new java.awt.Color(51, 255, 51));
-        buttonPersonalizadoCriar.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
-        buttonPersonalizadoCriar.setRadius(15);
-        buttonPersonalizadoCriar.addActionListener(new java.awt.event.ActionListener() {
+        buttonPersonalizadoEditar.setBackground(new java.awt.Color(20, 208, 130));
+        buttonPersonalizadoEditar.setForeground(new java.awt.Color(255, 255, 255));
+        buttonPersonalizadoEditar.setText("Editar Atividade");
+        buttonPersonalizadoEditar.setColor(new java.awt.Color(20, 208, 130));
+        buttonPersonalizadoEditar.setColorClick(new java.awt.Color(204, 255, 204));
+        buttonPersonalizadoEditar.setColorOver(new java.awt.Color(51, 255, 51));
+        buttonPersonalizadoEditar.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        buttonPersonalizadoEditar.setRadius(15);
+        buttonPersonalizadoEditar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonPersonalizadoCriarActionPerformed(evt);
+                buttonPersonalizadoEditarActionPerformed(evt);
             }
         });
 
@@ -194,76 +200,100 @@ public class CadastrarAtividade extends javax.swing.JFrame {
             }
         });
 
+        jlAndamento.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        jlAndamento.setText("Ultimo andamento da atividade:");
+
+        jtaAndamento.setColumns(20);
+        jtaAndamento.setRows(5);
+        jtaAndamento.setBorder(null);
+        jScrollPane2.setViewportView(jtaAndamento);
+
         javax.swing.GroupLayout PanelBorderWithRadiusLayout = new javax.swing.GroupLayout(PanelBorderWithRadius);
         PanelBorderWithRadius.setLayout(PanelBorderWithRadiusLayout);
         PanelBorderWithRadiusLayout.setHorizontalGroup(
             PanelBorderWithRadiusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(panelBorderTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, 763, Short.MAX_VALUE)
-            .addGroup(PanelBorderWithRadiusLayout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelBorderWithRadiusLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(PanelBorderWithRadiusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelBorderWithRadiusLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(PanelBorderWithRadiusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelBorderWithRadiusLayout.createSequentialGroup()
-                                .addGroup(PanelBorderWithRadiusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jtfNomeAtiv, javax.swing.GroupLayout.PREFERRED_SIZE, 526, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(PanelBorderWithRadiusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, PanelBorderWithRadiusLayout.createSequentialGroup()
-                                            .addComponent(jlDificuldade)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(jcbDificuldade, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGap(103, 103, 103)
-                                            .addComponent(jlStatus)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                            .addComponent(jcbStatus, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 524, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(112, 112, 112))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelBorderWithRadiusLayout.createSequentialGroup()
-                                .addComponent(jlNome)
-                                .addGap(281, 281, 281))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelBorderWithRadiusLayout.createSequentialGroup()
-                                .addComponent(jlObjetivo)
-                                .addGap(266, 266, 266))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelBorderWithRadiusLayout.createSequentialGroup()
                                 .addComponent(jtfPrazo, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(324, 324, 324))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelBorderWithRadiusLayout.createSequentialGroup()
-                                .addComponent(buttonPersonalizadoCriar, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(273, 273, 273))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelBorderWithRadiusLayout.createSequentialGroup()
-                                .addComponent(jlPrazo)
-                                .addGap(310, 310, 310))))
-                    .addGroup(PanelBorderWithRadiusLayout.createSequentialGroup()
-                        .addComponent(jbtBack)
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                                .addGap(14, 14, 14))
+                            .addComponent(jlPrazo, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addGap(309, 309, 309))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelBorderWithRadiusLayout.createSequentialGroup()
+                        .addGroup(PanelBorderWithRadiusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(PanelBorderWithRadiusLayout.createSequentialGroup()
+                                .addComponent(jbtBack)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(PanelBorderWithRadiusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(PanelBorderWithRadiusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelBorderWithRadiusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(PanelBorderWithRadiusLayout.createSequentialGroup()
+                                                .addGap(163, 163, 163)
+                                                .addComponent(jlObjetivo))
+                                            .addGroup(PanelBorderWithRadiusLayout.createSequentialGroup()
+                                                .addComponent(jlDificuldade)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(jcbDificuldade, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(103, 103, 103)
+                                                .addComponent(jlStatus)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(jcbStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 526, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelBorderWithRadiusLayout.createSequentialGroup()
+                                            .addComponent(jlNome)
+                                            .addGap(169, 169, 169)))
+                                    .addGroup(PanelBorderWithRadiusLayout.createSequentialGroup()
+                                        .addGap(161, 161, 161)
+                                        .addComponent(buttonPersonalizadoEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(PanelBorderWithRadiusLayout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addGroup(PanelBorderWithRadiusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 526, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jtfNomeAtiv, javax.swing.GroupLayout.PREFERRED_SIZE, 526, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(112, 112, 112))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelBorderWithRadiusLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jlAndamento)
+                .addGap(214, 214, 214))
         );
         PanelBorderWithRadiusLayout.setVerticalGroup(
             PanelBorderWithRadiusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PanelBorderWithRadiusLayout.createSequentialGroup()
                 .addComponent(panelBorderTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(PanelBorderWithRadiusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(PanelBorderWithRadiusLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jbtBack))
+                    .addGroup(PanelBorderWithRadiusLayout.createSequentialGroup()
+                        .addGap(16, 16, 16)
+                        .addComponent(jlNome)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jbtBack)
-                .addGap(8, 8, 8)
-                .addComponent(jlNome)
-                .addGap(18, 18, 18)
                 .addComponent(jtfNomeAtiv, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jlObjetivo)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(24, 24, 24)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jlAndamento)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(PanelBorderWithRadiusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jlDificuldade)
                     .addComponent(jcbDificuldade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jlStatus)
                     .addComponent(jcbStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jlPrazo)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jtfPrazo, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26)
-                .addComponent(buttonPersonalizadoCriar, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20)
+                .addComponent(buttonPersonalizadoEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 34, Short.MAX_VALUE))
         );
 
@@ -311,48 +341,76 @@ public class CadastrarAtividade extends javax.swing.JFrame {
         telaPrincipal.setVisible(true);
     }//GEN-LAST:event_jbtBackActionPerformed
 
-    private void buttonPersonalizadoCriarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonPersonalizadoCriarActionPerformed
-        // TODO add your handling code here:
-        if (!jtfNomeAtiv.getText().isEmpty() && jtfNomeAtiv.getText() != null) {
-            if (!jtaObjetivo.getText().isEmpty() && jtaObjetivo.getText() != null) {
-                try {
-                    int prazo = Integer.parseInt(jtfPrazo.getText());
-                    Object selecionadoAtualStatus = jcbStatus.getSelectedItem();
-                    String stringStatus = (String) selecionadoAtualStatus;
-                    if (prazo > 0 || stringStatus.equals("Concluido")) {
-                        Object selecionadoAtualDificuldade = jcbDificuldade.getSelectedItem();
-                        String stringDificuldade = (String) selecionadoAtualDificuldade;
-                        StatusType status = StatusType.valueOf(stringStatus);
-                        if (stringStatus.equals("Concluido")) {
-                            LocalDate dataFinalizacao = LocalDate.now();
-                            Atividade atividade = new Atividade(usuarioLogado.getCodigo(), prazo, jtfNomeAtiv.getText(), jtaObjetivo.getText(), stringDificuldade, status, dataFinalizacao);
-                            atividadeDAO.cadastrarAtividade(atividade);
-                        } else {
-                            Atividade atividade = new Atividade(usuarioLogado.getCodigo(), prazo, jtfNomeAtiv.getText(), jtaObjetivo.getText(), stringDificuldade, status);
-                            atividadeDAO.cadastrarAtividade(atividade);
-                        }
+    private void atribuirValores(Atividade atividade) {
+        // Obtém a atividade pelo ID
+        if (atividade != null) {
+            // Atribui os valores aos campos do formulário
+            jtfNomeAtiv.setText(atividade.getNome());
+            jtaObjetivo.setText(atividade.getObj());
 
-                        jtfNomeAtiv.setText("");
-                        jtaObjetivo.setText("");
-                        jtfPrazo.setText("");
-                        jcbDificuldade.setSelectedIndex(0);
-                        jcbStatus.setSelectedIndex(0);
-                        Principal principal = new Principal(usuarioLogado);
-                        this.dispose();
-                        principal.setVisible(true);
-                    } else {
-                        aviso.MensagemErro("Prazo é menor ou igual a 0!");
-                    }
-                } catch (NumberFormatException e) {
-                    aviso.MensagemErro("O valor do prazo não é um número válido!");
-                }
-            } else {
-                aviso.MensagemErro("Objetivo está vazio!");
-            }
+            // Verifica se o campo andamento não é nulo antes de setar
+            jtaAndamento.setText(atividade.getAndamento() != null ? atividade.getAndamento() : "");
+
+            jtfPrazo.setText(String.valueOf((atividade.getPrazo() > 0 ? atividade.getPrazo() : "0")));
+
+            // Ajusta os valores do JComboBox para status e dificuldade
+            jcbStatus.setSelectedItem(atividade.getStatus().toString());
+            jcbDificuldade.setSelectedItem(atividade.getDificuldade());
         } else {
-            aviso.MensagemErro("Nome da Atividade está vazio!");
+            aviso.MensagemErro("Não foi possível carregar os valores da atividade com ID: " + atividade.getCodigo());
         }
-    }//GEN-LAST:event_buttonPersonalizadoCriarActionPerformed
+    }
+
+    private void buttonPersonalizadoEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonPersonalizadoEditarActionPerformed
+        // TODO add your handling code here:
+        try {
+            if (jtfNomeAtiv.getText() == null || jtfNomeAtiv.getText().isEmpty()) {
+                aviso.MensagemErro("Nome da Atividade não pode estar vazio.");
+                return;
+            }
+            if (jtaObjetivo.getText() == null || jtaObjetivo.getText().isEmpty()) {
+                aviso.MensagemErro("Objetivo não pode estar vazio.");
+                return;
+            }
+            if (jtfPrazo.getText() == null || jtfPrazo.getText().isEmpty() || Integer.parseInt(jtfPrazo.getText()) <= 0) {
+                aviso.MensagemErro("Prazo não pode estar vazio e deve ser maior que 0.");
+                return;
+            }
+
+            // Obtém os valores dos campos
+            String nome = jtfNomeAtiv.getText();
+            String obj = jtaObjetivo.getText();
+            String andamento = jtaAndamento.getText();
+            String dificuldade = (String) jcbDificuldade.getSelectedItem();
+            String statusString = (String) jcbStatus.getSelectedItem();
+            StatusType status = StatusType.valueOf(statusString);
+            int prazo = Integer.parseInt(jtfPrazo.getText());
+
+            // Define data de finalização caso o status seja concluído
+            LocalDate dataFinalizacao = null;
+            if (status == StatusType.Concluido) {
+                dataFinalizacao = LocalDate.now();
+            }
+
+            atividade.setNome(nome);
+            atividade.setObj(obj);
+            atividade.setAndamento(andamento);
+            atividade.setStatus(status);
+            atividade.setDificuldade(dificuldade);
+            atividade.setPrazo(prazo);
+            atividade.setData_finalizacao(dataFinalizacao);
+
+            atividadeDAO.editarAtividade(atividade);
+            
+            Principal principal = new Principal(usuarioLogado);
+            this.dispose();
+            principal.setVisible(true);
+        } catch (NumberFormatException e) {
+            aviso.MensagemErro("Prazo deve ser um número válido.");
+        }catch (Exception e) {
+            aviso.MensagemErro("Erro ao editar atividade: " + e.getMessage());
+        }
+    }//GEN-LAST:event_buttonPersonalizadoEditarActionPerformed
 
     private void jcbStatusItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jcbStatusItemStateChanged
         // TODO add your handling code here:
@@ -363,7 +421,6 @@ public class CadastrarAtividade extends javax.swing.JFrame {
             jtfPrazo.setText("0");
             jtfPrazo.setEnabled(false);
         } else {
-            jtfPrazo.setText("");
             jtfPrazo.setEnabled(true);
         }
     }//GEN-LAST:event_jcbStatusItemStateChanged
@@ -374,11 +431,13 @@ public class CadastrarAtividade extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private Components.PanelBorder PanelBorderWithRadius;
-    private Components.ButtonPersonalizado buttonPersonalizadoCriar;
+    private Components.ButtonPersonalizado buttonPersonalizadoEditar;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JButton jbtBack;
     private javax.swing.JComboBox<String> jcbDificuldade;
     private javax.swing.JComboBox<String> jcbStatus;
+    private javax.swing.JLabel jlAndamento;
     private javax.swing.JLabel jlDificuldade;
     private javax.swing.JLabel jlNome;
     private javax.swing.JLabel jlObjetivo;
@@ -386,6 +445,7 @@ public class CadastrarAtividade extends javax.swing.JFrame {
     private javax.swing.JLabel jlStatus;
     private javax.swing.JLabel jlTitulo;
     private javax.swing.JPanel jpBordaReta;
+    private javax.swing.JTextArea jtaAndamento;
     private javax.swing.JTextArea jtaObjetivo;
     private javax.swing.JTextField jtfNomeAtiv;
     private javax.swing.JTextField jtfPrazo;

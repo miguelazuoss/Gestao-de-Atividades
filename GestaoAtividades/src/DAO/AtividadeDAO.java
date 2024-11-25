@@ -10,6 +10,7 @@ import Telas.Aviso;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 /**
@@ -57,8 +58,8 @@ public class AtividadeDAO {
         String sql = "delete from atividade where usuario_codigo = ? and codigo= ?";
 
         try (PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setInt(1, usuarioCodigo); // Define o código do usuário
-            ps.setInt(2, idAtividade);  // Define o ID da atividade a ser excluída
+            ps.setInt(1, usuarioCodigo); 
+            ps.setInt(2, idAtividade);  
 
             int rowsAffected = ps.executeUpdate();
 
@@ -70,6 +71,100 @@ public class AtividadeDAO {
 
         } catch (Exception e) {
             aviso.MensagemErro("Erro ao excluir atividade: " + e.getMessage());
+        }
+    }
+
+    public void editarAtividade(Atividade atividade) {
+        // SQL para atualizar os dados da atividade
+        String sql = "update atividade set nome = ?, obj = ?, andamento = ?, dificuldade = ?, status = ?, prazo = ?, data_finalizacao = ? where usuario_codigo = ? and codigo = ?";
+
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, atividade.getNome());
+            ps.setString(2, atividade.getObj());
+            ps.setString(3, atividade.getAndamento());
+            ps.setString(4, atividade.getDificuldade());
+            ps.setString(5, atividade.getStatus().toString());
+            ps.setInt(6, atividade.getPrazo());
+
+            if (atividade.getData_finalizacao() != null) {
+                ps.setDate(7, java.sql.Date.valueOf(atividade.getData_finalizacao())); // Data de finalização
+            } else {
+                ps.setNull(7, java.sql.Types.DATE); // Define nulo caso não tenha finalização
+            }
+
+            ps.setInt(8, atividade.getUsuario_codigo());
+            ps.setInt(9, atividade.getCodigo());
+
+            // Executa o update
+            int rowsAffected = ps.executeUpdate();
+
+            if (rowsAffected > 0) {
+                aviso.MensagemSucesso("Atividade " + atividade.getNome() + " atualizada com sucesso!");
+            } else {
+                aviso.MensagemErro("Nenhuma atividade encontrada para atualizar.");
+            }
+        } catch (Exception e) {
+            aviso.MensagemErro("Erro ao atualizar atividade: " + e.getMessage());
+        }
+    }
+
+    public Atividade atividadePorID(Integer usuarioCodigo, Integer idAtividade) {
+        String sql = "select *, prazo - datediff(curdate(), data_criacao) as prazo_restante from atividade where usuario_codigo = ? and codigo = ?";
+
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, usuarioCodigo); // Define o código do usuário
+            ps.setInt(2, idAtividade);  // Define o ID da atividade
+
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                // Converte o status de string para o enum StatusType
+                String statusString = rs.getString("status");
+                StatusType status = StatusType.valueOf(statusString);
+
+                // Cria um novo objeto Atividade com os dados retornados
+                return new Atividade(
+                        rs.getInt("codigo"),
+                        rs.getInt("usuario_codigo"),
+                        rs.getInt("prazo_restante"),
+                        rs.getString("nome"),
+                        rs.getString("obj"),
+                        rs.getString("andamento") != null ? rs.getString("andamento") : null,
+                        rs.getString("dificuldade"),
+                        status,
+                        rs.getDate("data_criacao") != null ? rs.getDate("data_criacao").toLocalDate() : null,
+                        rs.getDate("data_finalizacao") != null ? rs.getDate("data_finalizacao").toLocalDate() : null
+                );
+            } else {
+                aviso.MensagemErro("Atividade com ID " + idAtividade + " não encontrada.");
+                return null;
+            }
+
+        } catch (Exception e) {
+            aviso.MensagemErro("Erro ao buscar atividade: " + e.getMessage());
+            return null;
+        }
+    }
+
+    public void tempoEsgotado(int usuarioCodigo, int idAtividade) {
+        String sql = "UPDATE atividade SET status = ?, data_finalizacao = ? WHERE usuario_codigo = ? AND codigo = ?";
+
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, StatusType.Concluido.toString()); // Define o status como "Concluído"
+            ps.setDate(2, java.sql.Date.valueOf(LocalDate.now())); // Adiciona a data atual como data de finalização
+            ps.setInt(3, usuarioCodigo); // Código do usuário
+            ps.setInt(4, idAtividade);  // ID da atividade
+
+            int rowsAffected = ps.executeUpdate();
+
+            if (rowsAffected > 0) {
+                aviso.MensagemSucesso("Atividade com ID " + idAtividade + " foi dada como concluida pois o prazo chegou a 0!");
+            } else {
+                aviso.MensagemErro("Nenhuma atividade encontrada para concluir com o ID " + idAtividade);
+            }
+
+        } catch (Exception e) {
+            aviso.MensagemErro("Erro ao atualizar a atividade para 'Concluído': " + e.getMessage());
         }
     }
 
@@ -116,7 +211,8 @@ public class AtividadeDAO {
                 }
                 String statusString = rs.getString("status");
                 StatusType status = StatusType.valueOf(statusString);
-                Atividade atividade = new Atividade(rs.getInt("codigo"),
+                Atividade atividade = new Atividade(
+                        rs.getInt("codigo"),
                         rs.getInt("usuario_codigo"),
                         rs.getInt("prazo"),
                         rs.getString("nome"),

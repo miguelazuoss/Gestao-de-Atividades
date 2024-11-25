@@ -6,6 +6,7 @@ package Telas;
 
 import DAO.AtividadeDAO;
 import Models.Atividade;
+import Models.StatusType;
 import Models.Usuario;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -32,6 +33,7 @@ public class Principal extends javax.swing.JFrame {
     String filtro = "";
     String filtroSearch = "";
     String stringFiltroCombo = "";
+    Aviso aviso = new Aviso();
 
     public Principal(Usuario usuario) {
         usuarioLogado = usuario;
@@ -292,6 +294,11 @@ public class Principal extends javax.swing.JFrame {
         tablePersonalizadoAtividades.setGridColor(new java.awt.Color(204, 204, 204));
         tablePersonalizadoAtividades.setShowGrid(false);
         tablePersonalizadoAtividades.setShowHorizontalLines(true);
+        tablePersonalizadoAtividades.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablePersonalizadoAtividadesMouseClicked(evt);
+            }
+        });
         jspTable.setViewportView(tablePersonalizadoAtividades);
         tablePersonalizadoAtividades.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         if (tablePersonalizadoAtividades.getColumnModel().getColumnCount() > 0) {
@@ -545,7 +552,7 @@ public class Principal extends javax.swing.JFrame {
 
     private void cardButtonAndamentoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cardButtonAndamentoMouseClicked
         // TODO add your handling code here:
-        filtroCard = "Ativo";
+        filtroCard = "Fazendo";
         getAtividades();
     }//GEN-LAST:event_cardButtonAndamentoMouseClicked
 
@@ -566,6 +573,27 @@ public class Principal extends javax.swing.JFrame {
         }
         getAtividades();
     }//GEN-LAST:event_buttonPersonalizadoOrdPrazoActionPerformed
+
+    private void tablePersonalizadoAtividadesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablePersonalizadoAtividadesMouseClicked
+        if (evt.getClickCount() == 2) { // Verifica se o clique foi duplo
+            int linhaSelecionada = tablePersonalizadoAtividades.getSelectedRow(); // Obtém a linha selecionada
+
+            if (linhaSelecionada != -1) { // Garante que há uma linha selecionada
+                // Obtém o modelo da tabela
+                DefaultTableModel model = (DefaultTableModel) tablePersonalizadoAtividades.getModel();
+
+                // Captura o ID da atividade da coluna correspondente (assumindo que o ID está na coluna 0)
+                int idAtividade = (int) model.getValueAt(linhaSelecionada, 0);
+
+                // Chama o método editarAtividade passando o ID da atividade
+                EditarAtividade telaEditar = new EditarAtividade(usuarioLogado, idAtividade);
+                telaEditar.setVisible(true);
+                this.dispose();
+            } else {
+                aviso.MensagemErro("Nenhuma linha selecionada!");
+            }
+        }
+    }//GEN-LAST:event_tablePersonalizadoAtividadesMouseClicked
 
     private void getAtividades() {
         DefaultTableModel model = (DefaultTableModel) tablePersonalizadoAtividades.getModel();
@@ -597,6 +625,9 @@ public class Principal extends javax.swing.JFrame {
         LocalDate dataFinal = atividade.getData_criacao().plusDays(atividade.getPrazo());
         LocalDate dataAgora = LocalDate.now();
         long dias = ChronoUnit.DAYS.between(dataAgora, dataFinal);
+        if (dias <= 0 && atividade.getStatus() != StatusType.Concluido) {
+            atividadeDAO.tempoEsgotado(usuarioLogado.getCodigo(), atividade.getCodigo());
+        }
         return Math.max(dias, 0); // Garante que o valor não seja negativo
     }
 
@@ -620,7 +651,7 @@ public class Principal extends javax.swing.JFrame {
 
             if (atividadeE.getStatus().toString().equals("Pendente")) {
                 contadorPendente += 1;
-            } else if (atividadeE.getStatus().toString().equals("Ativo")) {
+            } else if (atividadeE.getStatus().toString().equals("Fazendo")) {
                 contadorAtivo += 1;
             } else {
                 contadorConcluido += 1;

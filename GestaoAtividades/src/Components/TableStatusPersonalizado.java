@@ -26,8 +26,8 @@ public class TableStatusPersonalizado extends JLabel {
             String typeString;
             if ("Pendente".equals(type.toString())) {
                 typeString = "Pendente";
-            } else if ("Ativo".equals(type.toString())) {
-                typeString = "Ativo";
+            } else if ("Fazendo".equals(type.toString())) {
+                typeString = "Fazendo";
             } else {
                 typeString = "Concluído";
             }
@@ -44,7 +44,7 @@ public class TableStatusPersonalizado extends JLabel {
             GradientPaint g;
             if (type == StatusType.Pendente) {
                 g = new GradientPaint(0, 0, new Color(253, 200, 48), 0, getHeight(), new Color(243, 115, 53));
-            } else if (type == StatusType.Ativo) {
+            } else if (type == StatusType.Fazendo) {
                 g = new GradientPaint(0, 0, new Color(0, 180, 219), 0, getHeight(), new Color(0,131,176));
             } else {
                 g = new GradientPaint(0, 0, new Color(0, 242, 96), 0, getHeight(), new Color(17,207,168));

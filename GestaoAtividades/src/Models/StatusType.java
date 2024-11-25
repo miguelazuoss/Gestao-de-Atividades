@@ -9,5 +9,5 @@ package Models;
  * @author user
  */
     public enum StatusType {
-        Pendente, Ativo, Concluido
+        Pendente, Fazendo, Concluido
     }
