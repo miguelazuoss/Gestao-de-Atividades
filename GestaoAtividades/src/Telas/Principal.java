@@ -34,11 +34,12 @@ public class Principal extends javax.swing.JFrame {
     String filtroSearch = "";
     String stringFiltroCombo = "";
     Aviso aviso = new Aviso();
-
+ArrayList<Atividade> listaAtividade;
     public Principal(Usuario usuario) {
         usuarioLogado = usuario;
         initComponents();
         carregarElementos();
+        listaAtividade = atividadeDAO.getAtividades(usuarioLogado.getCodigo(), filtro, filtroSearch, stringFiltroCombo);
         atualizarLista();
     }
 
@@ -362,7 +363,7 @@ public class Principal extends javax.swing.JFrame {
                                 .addComponent(jtfSearchBar, javax.swing.GroupLayout.PREFERRED_SIZE, 909, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jbtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 18, Short.MAX_VALUE)))
+                        .addGap(0, 10, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         panelBorderWithRadiusLayout.setVerticalGroup(
@@ -384,7 +385,7 @@ public class Principal extends javax.swing.JFrame {
                         .addComponent(cardButtonConcluida, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(cardButtonAndamento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cardButtonPendentes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
                 .addGroup(panelBorderWithRadiusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jbtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(panelBorderWithRadiusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -415,8 +416,7 @@ public class Principal extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void carregarElementos() {
+   private void carregarElementos() {
         cardButtonPendentes.setTemp1(cardButtonPendentes.getGradientStartColor());
         cardButtonPendentes.setTemp2(cardButtonPendentes.getGradientFinalColor());
         cardButtonAndamento.setTemp1(cardButtonAndamento.getGradientStartColor());
@@ -429,7 +429,8 @@ public class Principal extends javax.swing.JFrame {
     }
 
     public void atualizarLista() {
-        ArrayList<Atividade> listaAtividade = atividadeDAO.getAtividades(usuarioLogado.getCodigo(), filtro, filtroSearch, stringFiltroCombo);
+        listaAtividade = atividadeDAO.getAtividades(usuarioLogado.getCodigo(), filtro, filtroSearch, stringFiltroCombo);
+        calcularPrazosFinalizados(listaAtividade);
         getAtividades();
         atualizarContadores(listaAtividade);
     }
@@ -598,9 +599,7 @@ public class Principal extends javax.swing.JFrame {
     private void getAtividades() {
         DefaultTableModel model = (DefaultTableModel) tablePersonalizadoAtividades.getModel();
         model.setRowCount(0);
-
-        ArrayList<Atividade> listaAtividade = atividadeDAO.getAtividades(usuarioLogado.getCodigo(), filtro, filtroSearch, stringFiltroCombo);
-
+        listaAtividade = atividadeDAO.getAtividades(usuarioLogado.getCodigo(), filtro, filtroSearch, stringFiltroCombo);
         for (Atividade atividadeE : listaAtividade) {
             String dataFormatadaFinal = formatarData(atividadeE.getData_finalizacao());
             String dataFormatada = formatarData(atividadeE.getData_criacao());
@@ -613,7 +612,6 @@ public class Principal extends javax.swing.JFrame {
                 adicionarAtividadeNaTabela(model, atividadeE, dataFormatada, dataFormatadaFinal, diasRestantes);
             }
         }
-
     }
 
     private String formatarData(LocalDate data) {
@@ -621,13 +619,20 @@ public class Principal extends javax.swing.JFrame {
         return (data != null) ? data.format(formato) : "";
     }
 
+    private void calcularPrazosFinalizados(ArrayList <Atividade> atividade){
+        for (Atividade atividadeE : listaAtividade) {
+        LocalDate dataFinal = atividadeE.getData_criacao().plusDays(atividadeE.getPrazo());
+        LocalDate dataAgora = LocalDate.now();
+        long dias = ChronoUnit.DAYS.between(dataAgora, dataFinal);
+        if (dias <= 0 && atividadeE.getStatus() != StatusType.Concluido) {
+            atividadeDAO.tempoEsgotado(usuarioLogado.getCodigo(), atividadeE.getCodigo());
+            listaAtividade = atividadeDAO.getAtividades(usuarioLogado.getCodigo(), filtro, filtroSearch, stringFiltroCombo);
+        }}
+    }
     private long calcularDiasPrazo(Atividade atividade) {
         LocalDate dataFinal = atividade.getData_criacao().plusDays(atividade.getPrazo());
         LocalDate dataAgora = LocalDate.now();
         long dias = ChronoUnit.DAYS.between(dataAgora, dataFinal);
-        if (dias <= 0 && atividade.getStatus() != StatusType.Concluido) {
-            atividadeDAO.tempoEsgotado(usuarioLogado.getCodigo(), atividade.getCodigo());
-        }
         return Math.max(dias, 0); // Garante que o valor não seja negativo
     }
 

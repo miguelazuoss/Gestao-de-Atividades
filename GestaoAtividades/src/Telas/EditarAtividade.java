@@ -372,8 +372,13 @@ public class EditarAtividade extends javax.swing.JFrame {
                 aviso.MensagemErro("Objetivo não pode estar vazio.");
                 return;
             }
-            if (jtfPrazo.getText() == null || jtfPrazo.getText().isEmpty() || Integer.parseInt(jtfPrazo.getText()) <= 0) {
+            String statusString = (String) jcbStatus.getSelectedItem();
+            if (jtfPrazo.getText() == null || jtfPrazo.getText().isEmpty() || (Integer.parseInt(jtfPrazo.getText()) <= 0 && (statusString.equals("Pendente") || statusString.equals("Fazendo")))) {
                 aviso.MensagemErro("Prazo não pode estar vazio e deve ser maior que 0.");
+                return;
+            }
+            if (atividade.getStatus().toString().equals("Concluido") && statusString.equals("Concluido") ) {
+                aviso.MensagemErro("Atividade já está concluída!");
                 return;
             }
 
@@ -382,7 +387,6 @@ public class EditarAtividade extends javax.swing.JFrame {
             String obj = jtaObjetivo.getText();
             String andamento = jtaAndamento.getText();
             String dificuldade = (String) jcbDificuldade.getSelectedItem();
-            String statusString = (String) jcbStatus.getSelectedItem();
             StatusType status = StatusType.valueOf(statusString);
             int prazo = Integer.parseInt(jtfPrazo.getText());
 
