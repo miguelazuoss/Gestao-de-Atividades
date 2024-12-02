@@ -22,16 +22,22 @@ public class CadastrarAtividade extends javax.swing.JFrame {
     /**
      * Creates new form CadastrarAtividade
      */
+    // Instância da classe Aviso para exibir mensagens ao usuário
     Aviso aviso = new Aviso();
+
+    // Objeto para interagir com o banco de dados de atividades
     AtividadeDAO atividadeDAO = new AtividadeDAO();
+
+    // Armazena o usuário atualmente logado no sistema
     Usuario usuarioLogado;
 
+    // Construtor que recebe o usuário logado e inicializa a tela
     public CadastrarAtividade(Usuario usuario) {
-        usuarioLogado = usuario;
-        initComponents();
-        setBackground(new Color(0, 0, 0, 0)); // Atribuindo o fundo para ser transparente ( para aparecer a borda arredondada )
-        PanelBorderWithRadius.initMoving(this); // Atribuindo o frame no metodo para o a movimentação da tela
-        jtaObjetivo.setLineWrap(true);
+        usuarioLogado = usuario; // Armazena o usuário logado
+        initComponents(); // Inicializa os componentes da interface gráfica
+        setBackground(new Color(0, 0, 0, 0)); // Define fundo transparente (necessário para bordas arredondadas)
+        PanelBorderWithRadius.initMoving(this); // Habilita movimentação da janela arrastando-a
+        jtaObjetivo.setLineWrap(true); // Ativa quebra automática de linha no campo de texto
     }
 
     /**
@@ -306,23 +312,27 @@ public class CadastrarAtividade extends javax.swing.JFrame {
 
     private void jbtBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtBackActionPerformed
         // TODO add your handling code here:
+        // Fecha a tela atual e abre a tela principal passando o usuário logado.
         Principal telaPrincipal = new Principal(usuarioLogado);
-        this.dispose();
-        telaPrincipal.setVisible(true);
+        this.dispose(); // Fecha a janela atual.
+        telaPrincipal.setVisible(true); // Exibe a tela principal.
     }//GEN-LAST:event_jbtBackActionPerformed
 
     private void buttonPersonalizadoCriarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonPersonalizadoCriarActionPerformed
         // TODO add your handling code here:
-        if (!jtfNomeAtiv.getText().isEmpty() && jtfNomeAtiv.getText() != null) {
-            if (!jtaObjetivo.getText().isEmpty() && jtaObjetivo.getText() != null) {
+        // Verifica se os campos estão preenchidos e processa a criação de uma nova atividade.
+        if (!jtfNomeAtiv.getText().isEmpty() && jtfNomeAtiv.getText() != null) { // Verifica o nome da atividade.
+            if (!jtaObjetivo.getText().isEmpty() && jtaObjetivo.getText() != null) { // Verifica o objetivo.
                 try {
-                    int prazo = Integer.parseInt(jtfPrazo.getText());
+                    int prazo = Integer.parseInt(jtfPrazo.getText()); // Converte o prazo para número inteiro.
                     Object selecionadoAtualStatus = jcbStatus.getSelectedItem();
                     String stringStatus = (String) selecionadoAtualStatus;
-                    if (prazo > 0 || stringStatus.equals("Concluido")) {
+                    if (prazo > 0 || stringStatus.equals("Concluido")) { // Valida o prazo ou o status como 'Concluido'.
                         Object selecionadoAtualDificuldade = jcbDificuldade.getSelectedItem();
                         String stringDificuldade = (String) selecionadoAtualDificuldade;
-                        StatusType status = StatusType.valueOf(stringStatus);
+                        StatusType status = StatusType.valueOf(stringStatus); // Converte o status para o enum correspondente.
+
+                        // Cria uma nova atividade, adicionando a data de finalização se concluída.
                         if (stringStatus.equals("Concluido")) {
                             LocalDate dataFinalizacao = LocalDate.now();
                             Atividade atividade = new Atividade(usuarioLogado.getCodigo(), prazo, jtfNomeAtiv.getText(), jtaObjetivo.getText(), stringDificuldade, status, dataFinalizacao);
@@ -332,6 +342,7 @@ public class CadastrarAtividade extends javax.swing.JFrame {
                             atividadeDAO.cadastrarAtividade(atividade);
                         }
 
+                        // Limpa os campos e volta para a tela principal.
                         jtfNomeAtiv.setText("");
                         jtaObjetivo.setText("");
                         jtfPrazo.setText("");
@@ -344,6 +355,7 @@ public class CadastrarAtividade extends javax.swing.JFrame {
                         aviso.MensagemErro("Prazo é menor ou igual a 0!");
                     }
                 } catch (NumberFormatException e) {
+                    // Exibe mensagem de erro se o prazo não for um número válido.
                     aviso.MensagemErro("O valor do prazo não é um número válido!");
                 }
             } else {
@@ -356,7 +368,8 @@ public class CadastrarAtividade extends javax.swing.JFrame {
 
     private void jcbStatusItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jcbStatusItemStateChanged
         // TODO add your handling code here:
-
+        // Verifica a mudança de status no combobox 'jcbStatus'.
+        // Se o status for 'Concluido', define o prazo como 0 e desabilita o campo
         Object selecionadoAtualStatus = jcbStatus.getSelectedItem();
         String stringStatus = (String) selecionadoAtualStatus;
         if (stringStatus.equals("Concluido")) {

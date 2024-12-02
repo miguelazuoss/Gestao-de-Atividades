@@ -348,12 +348,14 @@ public class Cadastro extends javax.swing.JFrame {
 
     private void jbtVisibilityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtVisibilityActionPerformed
         // TODO add your handling code here:
+        // Método executado ao clicar no botão de visibilidade da senha.
+        // Alterna entre mostrar e ocultar os caracteres da senha no campo 'jpfSenha'.
         if (visibility) {
-            jpfSenha.setEchoChar('*');
-            visibility = false;
+            jpfSenha.setEchoChar('*'); // Oculta os caracteres da senha com '*'.
+            visibility = false; // Atualiza o estado da variável de controle.
         } else {
-            jpfSenha.setEchoChar((char) 0);
-            visibility = true;
+            jpfSenha.setEchoChar((char) 0); // Exibe os caracteres da senha como texto normal.
+            visibility = true; // Atualiza o estado da variável de controle.
         }
     }//GEN-LAST:event_jbtVisibilityActionPerformed
 
@@ -362,27 +364,36 @@ public class Cadastro extends javax.swing.JFrame {
     }//GEN-LAST:event_jtfEmailActionPerformed
 
     private void buttonPersonalizadoCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonPersonalizadoCadastrarActionPerformed
-        // TODO add your handling code here:       
-        if (!jtfUsuario.getText().isEmpty() && jtfUsuario.getText() != null) {
-            if (jpfSenha.getPassword().length > 0) {
-                if (!jtfEmail.getText().isEmpty() && jtfEmail.getText() != null) {
-                    String login = jtfUsuario.getText().trim();
-                    String senha = new String(jpfSenha.getPassword());
-                    String email = jtfEmail.getText().trim();
+        // Método executado ao clicar no botão "Cadastrar".
+        // Verifica se os campos de usuário, senha e e-mail estão preenchidos antes de cadastrar um novo usuário.
+        if (!jtfUsuario.getText().isEmpty() && jtfUsuario.getText() != null) { // Verifica se o campo de usuário não está vazio.
+            if (jpfSenha.getPassword().length > 0) { // Verifica se o campo de senha não está vazio.
+                if (!jtfEmail.getText().isEmpty() && jtfEmail.getText() != null) { // Verifica se o campo de e-mail não está vazio.
+                    String login = jtfUsuario.getText().trim(); // Obtém o texto do campo de usuário, removendo espaços extras.
+                    String senha = new String(jpfSenha.getPassword()); // Converte o array de caracteres da senha para uma string.
+                    String email = jtfEmail.getText().trim(); // Obtém o texto do campo de e-mail, removendo espaços extras.
+
+                    // Cria um novo objeto de usuário com os dados fornecidos.
                     Usuario usuario = new Usuario(login, senha, email);
+
+                    // Salva o usuário no banco de dados através do DAO.
                     usuarioDAO.cadastrarUsuario(usuario);
-                    
+
+                    // Fecha a janela atual e abre a tela de login.
                     Login telaLogin = new Login();
-                    dispose();
-                    telaLogin.setVisible(true);
+                    dispose(); // Fecha a tela de cadastro.
+                    telaLogin.setVisible(true); // Exibe a tela de login.
                 } else {
+                    // Exibe uma mensagem de erro se o campo de e-mail estiver vazio.
                     aviso.MensagemErro("Email está vazio!");
                 }
             } else {
+                // Exibe uma mensagem de erro se o campo de senha estiver vazio.
                 aviso.MensagemErro("Senha está vazia!");
             }
         } else {
-            aviso.MensagemErro("Usuario está vazio!");
+            // Exibe uma mensagem de erro se o campo de usuário estiver vazio.
+            aviso.MensagemErro("Usuário está vazio!");
         }
     }//GEN-LAST:event_buttonPersonalizadoCadastrarActionPerformed
 

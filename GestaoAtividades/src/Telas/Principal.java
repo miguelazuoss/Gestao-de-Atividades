@@ -34,7 +34,8 @@ public class Principal extends javax.swing.JFrame {
     String filtroSearch = "";
     String stringFiltroCombo = "";
     Aviso aviso = new Aviso();
-ArrayList<Atividade> listaAtividade;
+    ArrayList<Atividade> listaAtividade;
+
     public Principal(Usuario usuario) {
         usuarioLogado = usuario;
         initComponents();
@@ -417,29 +418,33 @@ ArrayList<Atividade> listaAtividade;
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
    private void carregarElementos() {
+        // Define as cores dos componentes de interface
         cardButtonPendentes.setTemp1(cardButtonPendentes.getGradientStartColor());
         cardButtonPendentes.setTemp2(cardButtonPendentes.getGradientFinalColor());
         cardButtonAndamento.setTemp1(cardButtonAndamento.getGradientStartColor());
         cardButtonAndamento.setTemp2(cardButtonAndamento.getGradientFinalColor());
         cardButtonConcluida.setTemp1(cardButtonConcluida.getGradientStartColor());
         cardButtonConcluida.setTemp2(cardButtonConcluida.getGradientFinalColor());
+        // Define o fundo transparente e habilita o movimento da tela
         setBackground(new Color(0, 0, 0, 0));
         panelBorderWithRadius.initMoving(this);
+        // Exibe uma mensagem de boas-vindas ao usuário
         jlBemVindo.setText("Bem vindo " + usuarioLogado.getUser() + "!");
     }
 
     public void atualizarLista() {
-        listaAtividade = atividadeDAO.getAtividades(usuarioLogado.getCodigo(), filtro, filtroSearch, stringFiltroCombo);
-        calcularPrazosFinalizados(listaAtividade);
-        getAtividades();
-        atualizarContadores(listaAtividade);
+        listaAtividade = atividadeDAO.getAtividades(usuarioLogado.getCodigo(), filtro, filtroSearch, stringFiltroCombo); // Obtém as atividades filtradas
+        calcularPrazosFinalizados(); // Atualiza as atividades com prazos finalizados;
+        getAtividades(); // Atualiza a lista de atividades na interface
+        atualizarContadores(listaAtividade); // Atualiza os contadores de status
     }
 
     private void jbtSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtSearchActionPerformed
-        // TODO add your handling code here:
+        // Obtém o filtro selecionado e a pesquisa digitada
         Object selecionadoAtualFiltro = jcbFiltro.getSelectedItem();
         stringFiltroCombo = (String) selecionadoAtualFiltro;
         filtroSearch = jtfSearchBar.getText();
+        // Atualiza a lista de atividades com os filtros de pesquisa
         getAtividades();
     }//GEN-LAST:event_jbtSearchActionPerformed
 
@@ -472,14 +477,15 @@ ArrayList<Atividade> listaAtividade;
     }//GEN-LAST:event_jtfSearchBarActionPerformed
 
     private void buttonPersonalizadoOrdDifActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonPersonalizadoOrdDifActionPerformed
-        // TODO add your handling code here:
+        // Altera o filtro de ordenação entre crescente e decrescente
         if (filtro.equals("dificuldadeASC")) {
-            filtro = "dificuldadeDSC";
+            filtro = "dificuldadeDSC"; // Ordena de dificuldade crescente para decrescente
         } else if (filtro.equals("dificuldadeDSC")) {
-            filtro = "dificuldadeASC";
+            filtro = "dificuldadeASC"; // Ordena de dificuldade decrescente para crescente
         } else {
-            filtro = "dificuldadeASC";
+            filtro = "dificuldadeASC"; // Define o filtro como crescente, caso não esteja configurado
         }
+        // Atualiza a lista de atividades com o novo filtro de dificuldade
         getAtividades();
     }//GEN-LAST:event_buttonPersonalizadoOrdDifActionPerformed
 
@@ -564,14 +570,15 @@ ArrayList<Atividade> listaAtividade;
     }//GEN-LAST:event_cardButtonConcluidaMouseClicked
 
     private void buttonPersonalizadoOrdPrazoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonPersonalizadoOrdPrazoActionPerformed
-        // TODO add your handling code here:
+        // Altera o filtro de ordenação entre crescente e decrescente
         if (filtro.equals("prazoASC")) {
-            filtro = "prazoDSC";
+            filtro = "prazoDSC"; // Ordena de prazo crescente para decrescente
         } else if (filtro.equals("prazoDSC")) {
-            filtro = "prazoASC";
+            filtro = "prazoASC"; // Ordena de prazo decrescente para crescente
         } else {
-            filtro = "prazoASC";
+            filtro = "prazoASC"; // Define o filtro como crescente, caso não esteja configurado
         }
+        // Atualiza a lista de atividades com o novo filtro de prazo
         getAtividades();
     }//GEN-LAST:event_buttonPersonalizadoOrdPrazoActionPerformed
 
@@ -598,17 +605,19 @@ ArrayList<Atividade> listaAtividade;
 
     private void getAtividades() {
         DefaultTableModel model = (DefaultTableModel) tablePersonalizadoAtividades.getModel();
-        model.setRowCount(0);
-        listaAtividade = atividadeDAO.getAtividades(usuarioLogado.getCodigo(), filtro, filtroSearch, stringFiltroCombo);
+        model.setRowCount(0); // Limpa a tabela
+        listaAtividade = atividadeDAO.getAtividades(usuarioLogado.getCodigo(), filtro, filtroSearch, stringFiltroCombo); // Obtém as atividades filtradas
         for (Atividade atividadeE : listaAtividade) {
+            // Formata as datas de criação e finalização das atividades
             String dataFormatadaFinal = formatarData(atividadeE.getData_finalizacao());
             String dataFormatada = formatarData(atividadeE.getData_criacao());
+            // Calcula os dias restantes para o prazo da atividade
             long diasRestantes = calcularDiasPrazo(atividadeE);
 
-            boolean adicionarLinha = filtroCard == null || filtroCard.isEmpty()
-                    || atividadeE.getStatus().toString().equals(filtroCard);
+            boolean adicionarLinha = filtroCard == null || filtroCard.isEmpty() || atividadeE.getStatus().toString().equals(filtroCard); // Verifica se deve adicionar a linha com base no filtro de status
 
             if (adicionarLinha) {
+                // Adiciona a atividade na tabela
                 adicionarAtividadeNaTabela(model, atividadeE, dataFormatada, dataFormatadaFinal, diasRestantes);
             }
         }
@@ -616,27 +625,33 @@ ArrayList<Atividade> listaAtividade;
 
     private String formatarData(LocalDate data) {
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        return (data != null) ? data.format(formato) : "";
+        return (data != null) ? data.format(formato) : ""; // Retorna a data formatada ou uma string vazia se a data for nula
     }
 
-    private void calcularPrazosFinalizados(ArrayList <Atividade> atividade){
+    private void calcularPrazosFinalizados() {
         for (Atividade atividadeE : listaAtividade) {
-        LocalDate dataFinal = atividadeE.getData_criacao().plusDays(atividadeE.getPrazo());
-        LocalDate dataAgora = LocalDate.now();
-        long dias = ChronoUnit.DAYS.between(dataAgora, dataFinal);
-        if (dias <= 0 && atividadeE.getStatus() != StatusType.Concluido) {
-            atividadeDAO.tempoEsgotado(usuarioLogado.getCodigo(), atividadeE.getCodigo());
-            listaAtividade = atividadeDAO.getAtividades(usuarioLogado.getCodigo(), filtro, filtroSearch, stringFiltroCombo);
-        }}
+            // Calcula a data final com base no prazo e data de criação
+            LocalDate dataFinal = atividadeE.getData_criacao().plusDays(atividadeE.getPrazo());
+            LocalDate dataAgora = LocalDate.now(); // Obtém a data atual
+            long dias = ChronoUnit.DAYS.between(dataAgora, dataFinal); // Calcula os dias restantes
+
+            // Verifica se o prazo da atividade já foi esgotado e se não está concluída
+            if (dias <= 0 && atividadeE.getStatus() != StatusType.Concluido) {
+                atividadeDAO.tempoEsgotado(usuarioLogado.getCodigo(), atividadeE.getCodigo()); // Marca a atividade como tempo esgotado
+                listaAtividade = atividadeDAO.getAtividades(usuarioLogado.getCodigo(), filtro, filtroSearch, stringFiltroCombo); // Atualiza a lista de atividades
+            }
+        }
     }
+
     private long calcularDiasPrazo(Atividade atividade) {
         LocalDate dataFinal = atividade.getData_criacao().plusDays(atividade.getPrazo());
         LocalDate dataAgora = LocalDate.now();
-        long dias = ChronoUnit.DAYS.between(dataAgora, dataFinal);
-        return Math.max(dias, 0); // Garante que o valor não seja negativo
+        long dias = ChronoUnit.DAYS.between(dataAgora, dataFinal); // Calcula os dias restantes
+        return Math.max(dias, 0); // Retorna 0 se o número de dias for negativo
     }
 
     private void adicionarAtividadeNaTabela(DefaultTableModel model, Atividade atividade, String dataFormatada, String dataFormatadaFinal, long diasRestantes) {
+        // Cria uma linha de dados para a tabela
         Object[] linha = {
             atividade.getCodigo(),
             atividade.getNome(),
@@ -647,13 +662,13 @@ ArrayList<Atividade> listaAtividade;
             diasRestantes,
             atividade.getStatus()
         };
-        model.addRow(linha);
+        model.addRow(linha); // Adiciona a linha na tabela
     }
 
     private void atualizarContadores(ArrayList<Atividade> listaAtividade) {
         int contadorPendente = 0, contadorAtivo = 0, contadorConcluido = 0;
         for (Atividade atividadeE : listaAtividade) {
-
+            // Conta as atividades de cada status
             if (atividadeE.getStatus().toString().equals("Pendente")) {
                 contadorPendente += 1;
             } else if (atividadeE.getStatus().toString().equals("Fazendo")) {
@@ -662,6 +677,7 @@ ArrayList<Atividade> listaAtividade;
                 contadorConcluido += 1;
             }
         }
+        // Atualiza os contadores nos componentes de interface
         cardButtonPendentes.setValorTituloCard2(String.valueOf(contadorPendente));
         cardButtonAndamento.setValorTituloCard2(String.valueOf(contadorAtivo));
         cardButtonConcluida.setValorTituloCard2(String.valueOf(contadorConcluido));

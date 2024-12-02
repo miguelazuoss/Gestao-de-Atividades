@@ -331,21 +331,34 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_mouseVisibilityExited
 
     private void buttonPersonalizadoEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonPersonalizadoEntrarActionPerformed
-        // TODO add your handling code here:
+// Verifica se o campo de usuário não está vazio nem nulo.
         if (!jtfUsuario.getText().isEmpty() && jtfUsuario.getText() != null) {
+
+            // Verifica se o campo de senha contém algum valor (não está vazio).
             if (jpfSenha.getPassword().length > 0) {
+
+                // Obtém o valor do usuário e remove espaços extras ao redor.
                 String login = jtfUsuario.getText().trim();
+
+                // Converte a senha (que está no formato char[]) para uma String.
                 String senha = new String(jpfSenha.getPassword());
+
+                // Tenta autenticar o usuário com as credenciais fornecidas.
                 Usuario usuario = usuarioDAO.logarUsuario(login, senha);
-                if(usuario != null) {
+
+                // Verifica se a autenticação foi bem-sucedida (usuario não é nulo).
+                if (usuario != null) {
+                    // Se o login for bem-sucedido, abre a tela principal e passa o objeto usuario.
                     Principal telaPrincipal = new Principal(usuario);
-                    telaPrincipal.setVisible(true);
-                    dispose();
+                    telaPrincipal.setVisible(true); // Exibe a tela principal.
+                    dispose(); // Fecha a tela de login.
                 }
             } else {
+                // Se o campo senha estiver vazio, exibe uma mensagem de erro.
                 aviso.MensagemErro("Senha está vazia!");
             }
         } else {
+            // Se o campo usuário estiver vazio, exibe uma mensagem de erro.
             aviso.MensagemErro("Usuario está vazio!");
         }
     }//GEN-LAST:event_buttonPersonalizadoEntrarActionPerformed

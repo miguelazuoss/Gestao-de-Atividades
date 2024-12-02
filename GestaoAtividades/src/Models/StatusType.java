@@ -8,6 +8,8 @@ package Models;
  *
  * @author user
  */
+
+ // Enumeração que define os possíveis status de uma atividade no sistema.
     public enum StatusType {
         Pendente, Fazendo, Concluido
     }

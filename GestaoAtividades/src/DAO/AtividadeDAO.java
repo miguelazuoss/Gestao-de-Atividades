@@ -170,47 +170,70 @@ public class AtividadeDAO {
 
     // Achar todos as Atividades com tabela de prazo_restante a mais!!!    
     public ArrayList<Atividade> getAtividades(Integer usuarioCodigo, String filtro, String filtroSearch, String stringFiltroCombo) {
+        // Construção inicial da consulta SQL.
         StringBuilder sql = new StringBuilder();
         sql.append("select *, prazo - datediff(curdate(), data_criacao) as prazo_restante from atividade where usuario_codigo=?");
 
+        // Se o filtro de pesquisa não estiver vazio, modifica a consulta para incluir o filtro.
         if (!filtroSearch.isEmpty()) {
+            // Verifica se o filtro de pesquisa é por ID ou por nome.
             if (stringFiltroCombo.equals("ID")) {
                 try {
+                    // Tenta converter o filtro de pesquisa para um número, para pesquisa por ID.
                     int searchNumber = Integer.parseInt(filtroSearch);
                     sql.append(" and codigo=");
                     sql.append(searchNumber);
                 } catch (NumberFormatException e) {
+                    // Caso o valor não seja um número válido, exibe uma mensagem de erro.
                     aviso.MensagemErro("O valor da pesquisa do ID não é um número válido!");
                 }
             } else {
+                // Caso o filtro seja por nome, adiciona o filtro "like" na consulta SQL.
                 sql.append(" and nome like '%");
                 sql.append(filtroSearch);
                 sql.append("%'");
             }
         }
+
+        // Se o filtro de ordenação não estiver vazio, adiciona as cláusulas de ordenação.
         if (!filtro.isEmpty()) {
+            // Verifica qual tipo de filtro de ordenação foi selecionado e ajusta a consulta.
             if (filtro.equals("dificuldadeASC")) {
+                // Ordena pela dificuldade em ordem crescente.
                 sql.append(" order by CASE dificuldade WHEN 'Fácil' THEN 1 WHEN 'Médio' THEN 2  WHEN 'Difícil' THEN 3 ELSE 4 END;");
             } else if (filtro.equals("dificuldadeDSC")) {
+                // Ordena pela dificuldade em ordem decrescente.
                 sql.append(" order by CASE dificuldade WHEN 'Fácil' THEN 3 WHEN 'Médio' THEN 2  WHEN 'Difícil' THEN 1 ELSE 4 END;");
             } else if (filtro.equals("prazoASC")) {
+                // Ordena pela prazo restante em ordem crescente.
                 sql.append(" order by prazo_restante asc;");
             } else if (filtro.equals("prazoDSC")) {
+                // Ordena pela prazo restante em ordem decrescente.
                 sql.append(" order by prazo_restante desc;");
             }
         }
 
+        // Criação da lista de atividades que será retornada.
         ArrayList<Atividade> atividades = new ArrayList<>();
         try (PreparedStatement ps = con.prepareStatement(sql.toString())) {
+            // Define o código do usuário na consulta SQL.
             ps.setInt(1, usuarioCodigo);
+
+            // Executa a consulta e obtém o ResultSet com os resultados.
             ResultSet rs = ps.executeQuery();
 
+            // Itera sobre os resultados da consulta e cria os objetos Atividade.
             while (rs.next()) {
+                // Verifica se a lista de atividades está vazia e inicializa se necessário.
                 if (atividades == null) {
                     atividades = new ArrayList<>();
                 }
+
+                // Recupera o status da atividade e converte para o tipo StatusType.
                 String statusString = rs.getString("status");
                 StatusType status = StatusType.valueOf(statusString);
+
+                // Cria um objeto Atividade com os dados do ResultSet.
                 Atividade atividade = new Atividade(
                         rs.getInt("codigo"),
                         rs.getInt("usuario_codigo"),
@@ -221,12 +244,17 @@ public class AtividadeDAO {
                         rs.getString("dificuldade"),
                         status,
                         rs.getDate("data_criacao") != null ? rs.getDate("data_criacao").toLocalDate() : null,
-                        rs.getDate("data_finalizacao") != null ? rs.getDate("data_finalizacao").toLocalDate() : null);
+                        rs.getDate("data_finalizacao") != null ? rs.getDate("data_finalizacao").toLocalDate() : null
+                );
 
+                // Adiciona a atividade à lista de atividades.
                 atividades.add(atividade);
             }
+
+            // Retorna a lista de atividades encontradas.
             return atividades;
         } catch (Exception e) {
+            // Em caso de erro, lança uma exceção em tempo de execução.
             throw new RuntimeException(e);
         }
     }

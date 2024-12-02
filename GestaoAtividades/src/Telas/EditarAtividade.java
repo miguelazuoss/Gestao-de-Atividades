@@ -16,7 +16,6 @@ import javax.swing.ImageIcon;
  *
  * @author miguel_a_andrade
  */
-
 public class EditarAtividade extends javax.swing.JFrame {
 
     /**
@@ -26,14 +25,15 @@ public class EditarAtividade extends javax.swing.JFrame {
     AtividadeDAO atividadeDAO = new AtividadeDAO();
     Usuario usuarioLogado;
     Atividade atividade;
+
     public EditarAtividade(Usuario usuario, Integer id) {
         usuarioLogado = usuario;
         initComponents();
         setBackground(new Color(0, 0, 0, 0)); // Atribuindo o fundo para ser transparente ( para aparecer a borda arredondada )
         PanelBorderWithRadius.initMoving(this); // Atribuindo o frame no metodo para o a movimentação da tela
-        jtaObjetivo.setLineWrap(true);
-        jtaAndamento.setLineWrap(true);
-        atividade = atividadeDAO.atividadePorID(usuarioLogado.getCodigo(), id);
+        jtaObjetivo.setLineWrap(true); // as linhas serão quebradas se forem muito longas para caber na largura alocada.        
+        jtaAndamento.setLineWrap(true); // as linhas serão quebradas se forem muito longas para caber na largura alocada.
+        atividade = atividadeDAO.atividadePorID(usuarioLogado.getCodigo(), id); // iniciar recuperando asatividade especifica do usuario
         atribuirValores(atividade);
     }
 
@@ -362,27 +362,38 @@ public class EditarAtividade extends javax.swing.JFrame {
     }
 
     private void buttonPersonalizadoEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonPersonalizadoEditarActionPerformed
-        // TODO add your handling code here:
+        // Método executado ao clicar no botão "Editar".
         try {
+            // Verifica se o campo nome da atividade está vazio.
             if (jtfNomeAtiv.getText() == null || jtfNomeAtiv.getText().isEmpty()) {
                 aviso.MensagemErro("Nome da Atividade não pode estar vazio.");
                 return;
             }
+
+            // Verifica se o campo objetivo está vazio.
             if (jtaObjetivo.getText() == null || jtaObjetivo.getText().isEmpty()) {
                 aviso.MensagemErro("Objetivo não pode estar vazio.");
                 return;
             }
+
+            // Obtém o status atual selecionado.
             String statusString = (String) jcbStatus.getSelectedItem();
-            if (jtfPrazo.getText() == null || jtfPrazo.getText().isEmpty() || (Integer.parseInt(jtfPrazo.getText()) <= 0 && (statusString.equals("Pendente") || statusString.equals("Fazendo")))) {
+
+            // Valida o prazo: deve ser maior que 0 para status "Pendente" ou "Fazendo".
+            if (jtfPrazo.getText() == null || jtfPrazo.getText().isEmpty()
+                    || (Integer.parseInt(jtfPrazo.getText()) <= 0
+                    && (statusString.equals("Pendente") || statusString.equals("Fazendo")))) {
                 aviso.MensagemErro("Prazo não pode estar vazio e deve ser maior que 0.");
                 return;
             }
-            if (atividade.getStatus().toString().equals("Concluido") && statusString.equals("Concluido") ) {
+
+            // Verifica se a atividade já está concluída e tenta marcá-la como concluída novamente.
+            if (atividade.getStatus().toString().equals("Concluido") && statusString.equals("Concluido")) {
                 aviso.MensagemErro("Atividade já está concluída!");
                 return;
             }
 
-            // Obtém os valores dos campos
+            // Obtém os valores dos campos do formulário.
             String nome = jtfNomeAtiv.getText();
             String obj = jtaObjetivo.getText();
             String andamento = jtaAndamento.getText();
@@ -390,12 +401,13 @@ public class EditarAtividade extends javax.swing.JFrame {
             StatusType status = StatusType.valueOf(statusString);
             int prazo = Integer.parseInt(jtfPrazo.getText());
 
-            // Define data de finalização caso o status seja concluído
+            // Define a data de finalização se o status for "Concluido".
             LocalDate dataFinalizacao = null;
             if (status == StatusType.Concluido) {
                 dataFinalizacao = LocalDate.now();
             }
 
+            // Atualiza os dados da atividade.
             atividade.setNome(nome);
             atividade.setObj(obj);
             atividade.setAndamento(andamento);
@@ -404,27 +416,33 @@ public class EditarAtividade extends javax.swing.JFrame {
             atividade.setPrazo(prazo);
             atividade.setData_finalizacao(dataFinalizacao);
 
+            // Atualiza a atividade no banco de dados através do DAO.
             atividadeDAO.editarAtividade(atividade);
-            
+
+            // Retorna para a tela principal.
             Principal principal = new Principal(usuarioLogado);
-            this.dispose();
-            principal.setVisible(true);
+            this.dispose(); // Fecha a janela atual.
+            principal.setVisible(true); // Exibe a tela principal.
         } catch (NumberFormatException e) {
+            // Exibe uma mensagem de erro caso o prazo não seja um número válido.
             aviso.MensagemErro("Prazo deve ser um número válido.");
-        }catch (Exception e) {
+        } catch (Exception e) {
+            // Exibe uma mensagem genérica de erro para outros tipos de exceções.
             aviso.MensagemErro("Erro ao editar atividade: " + e.getMessage());
         }
     }//GEN-LAST:event_buttonPersonalizadoEditarActionPerformed
 
     private void jcbStatusItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jcbStatusItemStateChanged
-        // TODO add your handling code here:
-
+        // Método executado quando o status selecionado no JComboBox é alterado.
         Object selecionadoAtualStatus = jcbStatus.getSelectedItem();
         String stringStatus = (String) selecionadoAtualStatus;
+
+        // Se o status for "Concluido", desabilita o campo prazo e define o valor como "0".
         if (stringStatus.equals("Concluido")) {
             jtfPrazo.setText("0");
             jtfPrazo.setEnabled(false);
         } else {
+            // Caso contrário, habilita o campo prazo.
             jtfPrazo.setEnabled(true);
         }
     }//GEN-LAST:event_jcbStatusItemStateChanged
