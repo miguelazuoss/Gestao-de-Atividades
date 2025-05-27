@@ -7,7 +7,6 @@ package DAO;
 import Telas.Aviso;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -17,7 +16,7 @@ public class ConexaoBanco {
     Aviso aviso = new Aviso();
     public Connection getConexao() {
         try {
-            return DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/gestaoatividades", "root", "");
+            return DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/gestaoatividades", "root", "senai");
         } catch (Exception e) {
             aviso.MensagemErro("Erro de conexão com o banco!");
             return null;
